@@ -1,0 +1,16 @@
+<extend name="Base/common"/>
+<block name="content">
+<include file="./Base/model"/>
+<a href="#top" id="toTop"></a>
+<div class="liang_list">
+<label class="liang_label">办公用品名称</label>
+<select id="officecabilityType" class="liang_label">
+	<volist name="typelist" id="votypelist">
+		<option value="{$votypelist.cabilityid}">{$votypelist.cabilityname}</option>
+	</volist>
+</select>
+<div>
+<script src="__PUBLIC__/js/jquery.scrollToTop.min.js"></script>
+<script src="__PUBLIC__/js/liang_cookie.js"></script>
+</block>
+
