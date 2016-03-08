@@ -13,7 +13,7 @@
             dataType: 'json'
         });
 		function process(){
-				$('#result3').show();
+				$('#result').html('正在发送中...').show();
 			}
         function complete(data){
                 $('#result').html(data.info).show();
@@ -27,7 +27,7 @@
             dataType: 'json'
         });
 		function process(){
-				$('#result').html('正在登录中...').show();
+				$('#result2').html('正在登录中...').show();
 			}
         function complete(data){
 				if (data.status==1){
@@ -60,7 +60,7 @@
                         <h4 class="modal-title">找回密码</h4>
                     </div>
                     <div class="modal-body">
-						<form id="form" class="form-horizontal" action="__CONTROLLER__/ForgetPassword" autocomplete="on" method="post">
+						<form id="form1" class="form-horizontal" action="__CONTROLLER__/ForgetPassword" autocomplete="on" method="post">
 							<input id="forgetemail" class="form-control col-xs-10 col-sm-6 col-md-9" name="forgetemail" type="email" placeholder="Your Email Address" required autofocus>
 							<div id="result" class="result" style="display:none;"></div>	
 							<button id="submitemail" type="submit" class="form-control btn btn-primary btn-lg">Reset Password</button>

@@ -83,7 +83,6 @@
 .liang_table {
 	border: 1px solid #591804;
 	width: 100%;
-	
 }
 
 .liang_table th {
@@ -129,12 +128,12 @@
 }
 
 .liang_label {
-
     height: 28px;
 	padding: 2px;
 	font-size: 14px;
 	font-weight: bolder;
 }
+
 
 .liang_list {
 	width: 90%;

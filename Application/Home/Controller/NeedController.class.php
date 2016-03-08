@@ -13,14 +13,40 @@ class NeedController extends CommonController {
 		);
 		$this -> assign(othertitle,$data);
 		
+
 		$OCabilityModel = D('OfficeCability');
 		
 		$this -> assign(typelist,$OCabilityModel->getTypeList());
-		
 
-		
+			
 		$this -> display();
-		
-				dump($OCabilityModel->getLastSql());
-    }
+			
+		}
+	
+	public function apply() {
+		if(IS_POST) {
+			$OfficeModel = D('OfficeNeed');			
+			if ($OfficeModel->create()) 
+				{
+				$OfficeModel-> UserID = $_SESSION[C('USER_AUTH_KEY')];
+				$OfficeModel-> Date = date('Y-m-d');
+				$OfficeModel-> add();
+				
+				$data['status'] = 1;
+				$data['info'] = "申请成功";
+			//	$data['info'] = $OfficeModel->getLastSQL();
+				$this->ajaxReturn($data);
+				} 
+			else {
+			//	$data['info'] = $OfficeModel->getLastSQL();
+				$data['info'] = $OfficeModel->getError();
+				$this->ajaxReturn($data);
+			}
+		}
+		else {
+			$this -> error('申请失败'); 
+		}
+	}
+	
+	
 }

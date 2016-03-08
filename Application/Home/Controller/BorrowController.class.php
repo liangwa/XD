@@ -8,6 +8,7 @@ class BorrowController extends CommonController {
 		$this -> assign(title,"常用设备");
 		$this -> assign(description,"查看、借用常用设备");
 		$data = array(
+		array('name' => "设备首页", link => __CONTROLLER__."/index"),
 		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
 		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
 		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
@@ -40,6 +41,7 @@ class BorrowController extends CommonController {
 		$this -> assign(description,"允许、拒绝借出常用设备");
 		$data = array(
 		array('name' => "设备首页", link => __CONTROLLER__."/index"),
+		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
 		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
 		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
 		);
@@ -59,6 +61,7 @@ class BorrowController extends CommonController {
 		$data = array(
 		array('name' => "设备首页", link => __CONTROLLER__."/index"),
 		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
+		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
 		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
 		);
 		$this -> assign(othertitle,$data);
@@ -99,6 +102,7 @@ class BorrowController extends CommonController {
 			array('name' => "设备首页", link => __CONTROLLER__."/index"),
 			array('name' => "审核设备", link => __CONTROLLER__."/appro"),
 			array('name' => "管理设备", link => __CONTROLLER__."/edit"),
+			array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
 			);
 			$this -> assign(othertitle,$data);
 			
@@ -119,8 +123,7 @@ class BorrowController extends CommonController {
 		// $ndata['Parameter'] = $_POST['parameter'];
 		
 		
-		if ($CabilityModel->create()) {
-			$CabilityModel->save();
+		if ($CabilityModel->create() && $CabilityModel->save()) {
 
 			$data['status'] = 1;
 			$data['info'] = "修改成功";

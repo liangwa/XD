@@ -9,5 +9,9 @@ $(function(){
 		}
 	function complete(data){
 		alert(data.info);
+		if(data.status)
+			{
+			location.reload();
+			}
 		}
 });
