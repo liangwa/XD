@@ -22,4 +22,13 @@ class OfficeCabilityModel extends Model
 		
 		return $result;
 	}
+	
+	//根据ID获取办公用品属性
+	public function getOfficebyID($CabilityID)
+	{
+		$result=$this->where('CabilityID ="'.$CabilityID.'" and Disable != 1')->find();
+		
+		return $result;
+	}
+	
 }

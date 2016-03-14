@@ -180,3 +180,11 @@ a.liang_LinkB:hover{text-decoration:none;color: #5f3c23}
     filter: alpha(opacity=80); /* For IE8 and earlier */
 }
 
+.liang_input_big {
+	font-size: 14px;
+    height: 40px;
+    margin: 25px;
+	width: 300px;
+    margin-bottom: 25px;
+	border: 1px solid #ac6e41;
+}

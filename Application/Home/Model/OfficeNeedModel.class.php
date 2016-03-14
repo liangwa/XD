@@ -21,5 +21,14 @@ class OfficeNeedModel extends Model
 	
 	protected $_auto = array(
 	); 
+	
+	//根据Userid获取本月的已申请办公用品
+	public function getNeedbyUserID($userid) {
+		
+		$result=0;
+		$result=$this->where('UserID ="'.$userid.'" and month(Date) = month("'.date('Y-m-d').'")')->SUM('Count*binary(Price)');
+		
+		return $result;
+	}
 
 }
