@@ -4,7 +4,11 @@
     margin: 5px;
 	width: 300px;
     margin-bottom: 25px;
-	border: 1px solid #ac6e41;
+	border: 1px solid #a9a9a9;
+}
+
+#newuseremail:focus {
+	border-color: #ac6e41;
 }
 
 #newemail {
@@ -132,6 +136,7 @@
 	padding: 2px;
 	font-size: 14px;
 	font-weight: bolder;
+	
 }
 
 
@@ -183,8 +188,19 @@ a.liang_LinkB:hover{text-decoration:none;color: #5f3c23}
 .liang_input_big {
 	font-size: 14px;
     height: 40px;
-    margin: 25px;
+    margin: 5px;
 	width: 300px;
     margin-bottom: 25px;
-	border: 1px solid #ac6e41;
+	border: 1px solid #a9a9a9;
+	border-radius: 4px;
+}
+
+.liang_input{
+	border: 1px solid #a9a9a9;
+	border-radius: 1px;
+}
+
+.liang_input_big:focus,.liang_input:focus {
+	border-color: #ac6e41;
+	outline: 0;
 }

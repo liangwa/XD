@@ -5,37 +5,51 @@ use Think\Controller;
 class NeedController extends CommonController {
     // 框架首页
     public function index() {
-		$this -> assign(title,"办公用品");
-		$this -> assign(description,"查看、申请办公用品");
-		$data = array(
-		array('name' => "申请历史", link => __CONTROLLER__."/history"),
-		array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
-		array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
-		);
-		$this -> assign(othertitle,$data);
-		
-		$OCabilityModel = D('OfficeCability');		
-		$this -> assign(typelist,$OCabilityModel->getTypeList());
-
-			
-		$this -> display();
+		if (IS_POST) {
 			
 		}
+		else {
+			$this -> assign(title,"办公用品");
+			$this -> assign(description,"查看、申请办公用品");
+			$data = array(
+			array('name' => "申请首页", link =>  __CONTROLLER__."/index"),
+			array('name' => "申请历史", link => __CONTROLLER__."/history"),
+			array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
+			array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
+			);
+			$this -> assign(othertitle,$data);
+			
+			$OCabilityModel = D('OfficeCability');		
+			$this -> assign(typelist,$OCabilityModel->getTypeList());
+
+				
+			$this -> display();
+		}	
+	}
 		
 	//创建申请	
 	public function create() {
-		$this -> assign(title,"创建申请");
-		$this -> assign(description,"创建新的申请");
-		$data = array(
-		array('name' => "申请历史", link => __CONTROLLER__."/history"),
-		array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
-		array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
-		);
-		$this -> assign(othertitle,$data);
-			
-		$this -> display();
-			
+		if (IS_POST) {
+			// dump($_POST['data'][1]);
+
 		}
+		else {
+			$this -> assign(title,"创建申请");
+			$this -> assign(description,"创建新的申请");
+			$data = array(
+			array('name' => "申请首页", link =>  __CONTROLLER__."/index"),
+			array('name' => "申请历史", link => __CONTROLLER__."/history"),
+			array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
+			array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
+			);
+			$this -> assign(othertitle,$data);
+				
+			$OCabilityModel = D('OfficeCability');	
+			$this -> assign(typelist,$OCabilityModel->getTypeList());
+			
+			$this -> display();
+		}	
+	}
 	
 	public function apply() {
 		if(IS_POST) {

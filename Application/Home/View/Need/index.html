@@ -5,12 +5,12 @@
 <div class="liang_list">
 <form id="form" class="form-horizontal" action="__CONTROLLER__/apply" autocomplete="on" method="post">
 <label class="liang_label">办公用品名称</label>
-<select name="CabilityID" class="liang_label">
+<select name="CabilityID" class="liang_label liang_input">
 	<volist name="typelist" id="votypelist">
 		<option value="{$votypelist.cabilityid}" title="{$votypelist.brand}{$votypelist.model} && {$votypelist.price}元/{$votypelist.unit}">{$votypelist.cabilityname}</option>
 	</volist>
 </select>
-<input class="" name="Count" placeholder="申请数量" required autofocus>
+<input class="liang_label liang_input" name="Count" placeholder="申请数量" required autofocus>
 <button type="submit" class="liang_button">提交</button>
 </form>
 
