@@ -5,9 +5,9 @@
 <div class="liang_list">
 <form id="form" class="form-horizontal" action="__CONTROLLER__/apply" autocomplete="on" method="post">
 <label class="liang_label">办公用品名称</label>
-<select name="CabilityID" class="liang_label liang_input">
+<select name="PID" class="liang_label liang_input">
 	<volist name="typelist" id="votypelist">
-		<option value="{$votypelist.cabilityid}" title="{$votypelist.brand}{$votypelist.model} && {$votypelist.price}元/{$votypelist.unit}">{$votypelist.cabilityname}</option>
+		<option value="{$votypelist.pid}" title="{$votypelist.brand}{$votypelist.model} && {$votypelist.price}元/{$votypelist.unit}">{$votypelist.cabilityname}</option>
 	</volist>
 </select>
 <input class="liang_label liang_input" name="Count" placeholder="申请数量" required autofocus>
@@ -21,26 +21,33 @@
 		<th style="width:12%">品牌</th>
 		<th style="width:15%">型号</th>
 							
-		<th style="width:12%">单位</th>
 		<th style="width:12%">价格</th>
+		<th style="width:12%">单位</th>
 		<th style="width:12%">申请数量</th>
 		<th style="width:12%">领用人</th>
 		<th style="width:8%">操作</th>
 	</tr>
 	
 	<volist name="needlist" id="voneedlist">
-		<if condition="$voneedlist.approved eq 0">
-			<tr>
-		<else />
+		<if condition="$voneedlist.userid eq $_SESSION[C('USER_AUTH_KEY')]">
 			<tr style="background-color:#FFEFD5;">
+		<else />
+			<tr>
 		</if>
 		
 			<td>{$i}</td>
-			<td>{$voneedlist.type}</td>
-			<td>{$voneedlist.id}</td>
+			<td>{$voneedlist.cabilityname}</td>
+			<td>{$voneedlist.brand}</td>
+			<td>{$voneedlist.model}</td>
+			<td>{$voneedlist.price}</td>
+			<td>{$voneedlist.unit}</td>
+			<td>{$voneedlist.count}</td>
 			<td>{$voneedlist.cname}</td>
-			<td>{$voneedlist.borrowdate}</td>
-			<td><button class="liang_button" onclick="ActionData('{$voneedlist.number}','Retn')">归还</button></td>
+		<if condition="$voneedlist.userid eq $_SESSION[C('USER_AUTH_KEY')]">
+			<td><button class="liang_button" onclick="ActionData('{$voneedlist.number}','Retn')">取消</button></td>
+		<else />
+			<td></td>
+		</if>
 			
 		</tr>
 	</volist>
@@ -49,6 +56,6 @@
 </div>
 <script src="__PUBLIC__/js/jquery.scrollToTop.min.js"></script>
 <script src="__PUBLIC__/js/liang_cookie.js"></script>
-
+<script src="__PUBLIC__/js/liang_form.js"></script>
 </block>
 

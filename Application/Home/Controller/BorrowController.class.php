@@ -232,8 +232,8 @@ class BorrowController extends CommonController {
 			{
 				$BorrowModel -> reapprovedid($_POST['id']);
 				
-				$data['DID'] = $BorrowOne['did'];
-				$BorrowModel->add($data);
+				$adddata['DID'] = $BorrowOne['did'];
+				$BorrowModel->add($adddata);
 				
 				$data['status'] = 0;
 			//	$data['info'] = $BorrowModel ->getLastSql();

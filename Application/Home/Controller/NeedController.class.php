@@ -5,10 +5,6 @@ use Think\Controller;
 class NeedController extends CommonController {
     // 框架首页
     public function index() {
-		if (IS_POST) {
-			
-		}
-		else {
 			$this -> assign(title,"办公用品");
 			$this -> assign(description,"查看、申请办公用品");
 			$data = array(
@@ -19,19 +15,63 @@ class NeedController extends CommonController {
 			);
 			$this -> assign(othertitle,$data);
 			
-			$OCabilityModel = D('OfficeCability');		
-			$this -> assign(typelist,$OCabilityModel->getTypeList());
+			$OfficePeriodModel = D('OfficePeriod');	
+			$OfficeListModel = D('OfficeList');
+
+			$this -> assign(typelist,$OfficePeriodModel->getLatestOffice());
+			$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodID($OfficePeriodModel->getLatestPeriod()));
 
 				
 			$this -> display();
-		}	
 	}
 		
 	//创建申请	
 	public function create() {
+		$OCabilityModel = D('OfficeCability');	
+		$OfficePeriodModel = D('OfficePeriod');
+		$OfficeListModel = D('OfficeList');
+		
 		if (IS_POST) {
-			// dump($_POST['data'][1]);
+			if($_POST['data']) {
+				if($OfficeListModel->getNeedbyPeriodID($OfficePeriodModel->getLatestPeriod())){
 
+					// dump($_POST['data']);
+					foreach ($_POST['data'] as $Cabilitykey => $eachCabilityID) {
+						$temp = $OCabilityModel->getOfficebyID($eachCabilityID);
+						//数据库区分大小写，不合适配置
+						$datalist[$Cabilitykey]['CabilityName'] = $temp['cabilityname'];
+						$datalist[$Cabilitykey]['Brand'] = $temp['brand'];
+						$datalist[$Cabilitykey]['Model'] = $temp['model'];
+						$datalist[$Cabilitykey]['Price'] = $temp['price'];
+						$datalist[$Cabilitykey]['Unit'] = $temp['unit'];
+					}
+					
+					// dump($datalist);
+					
+					// foreach($datalist as $value){
+						// dump($value);
+					// }
+					// dump($OfficePeriodModel -> getLatestPeriod());
+					// dump($OfficePeriodModel -> getLastSQL());
+					
+					if ($OfficePeriodModel -> createNewPeriod($datalist,$_POST['pname']))
+					{
+						$this->success('创建成功，快让小伙伴来申请吧');
+					}
+					else {
+						$this->error('创建失败，请联系管理员');
+					}
+					// dump($OfficePeriodModel -> getLastSQL());
+				}
+				else {
+					$this->error($OfficePeriodModel->getLatestPeriod());
+					// $this->error('由于当前一期并没有人申请办公用品，出于某种脑残的理由，不让你创建新的申请...');
+				}
+			}
+			else {
+				$this->error('至少选择一个办公用品');
+			}
+			
 		}
 		else {
 			$this -> assign(title,"创建申请");
@@ -44,7 +84,7 @@ class NeedController extends CommonController {
 			);
 			$this -> assign(othertitle,$data);
 				
-			$OCabilityModel = D('OfficeCability');	
+
 			$this -> assign(typelist,$OCabilityModel->getTypeList());
 			
 			$this -> display();
@@ -53,42 +93,48 @@ class NeedController extends CommonController {
 	
 	public function apply() {
 		if(IS_POST) {
-			$OCabilityModel = D('OfficeCability');
 			$OfficeModel = D('OfficeNeed');			
 			$OfficeBalanceModel = M('OfficeBalance');
+			$OfficePeriodModel = D('OfficePeriod');
+			$OfficeListModel = D('OfficeList');
+			
+			//获取本次的pid
+			$lastperiodid=$OfficePeriodModel->getLatestPeriod();
+			
+			
 			
 			//获取本次申请信息
-			$temp = $OCabilityModel->getOfficebyID($_POST['CabilityID']);
+			$temp = $OfficePeriodModel->getOfficeByPID($_POST['PID']);
 			
 			//获取本月已申请信息(总价)
-			$pn = $OfficeModel-> getNeedbyUserID($_SESSION[C('USER_AUTH_KEY')]);
+			$pn = $OfficeListModel-> getNeedbyUserID($_SESSION[C('USER_AUTH_KEY')],$lastperiodid);
 			
 			
-			dump($pn);
-			dump($OfficeModel->getlastsql());
+			// dump($pn);
+			// dump($OfficeModel->getlastsql());
 			
 			//获取欠费信息
-			$balance = $OfficeBalanceModel->where('UserID ="'.$_SESSION[C('USER_AUTH_KEY')].'"')->getField('Balances');
+			$balance = $OfficeBalanceModel->where('UserID ="'.$_SESSION[C('USER_AUTH_KEY')].'" AND PeriodID="'.($lastperiodid-1).'"')->getField('Balances');
 			
 			// dump($balance);
 			
 			// dump($temp);
 			// dump($temp['cabilityid']);
 			
-			$bn = 2 - $balance;
+			$bn = 2 - $balance -$pn;
+			
+			// dump($temp); 
+			// dump($pn);
+			// dump($bn); 	
+			// dump($temp['price']);
 			
 			//判断欠费信息	 溢价的申请用品超过2件 或者 非足额的用户 都禁止超额申请
-			if (($pn == 0 && $bn == 2 && $_POST['Count'] == 1) || ($temp['price']*$_POST['Count'] < $bn))
+			if (($bn == 2 && $_POST['Count'] == 1) || ($temp['price']*$_POST['Count'] < $bn))
 			{
-				//数据库区分大小写，不合适配置
-				$adddata['CabilityName'] = $temp['cabilityname'];
-				$adddata['Brand'] = $temp['cabilityname'];
-				$adddata['Model'] = $temp['model'];
-				$adddata['Price'] = $temp['price'];
-				$adddata['Unit'] = $temp['unit'];
-				
+
 				$adddata['Count'] = $_POST['Count'];
 				$adddata['UserID'] = $_SESSION[C('USER_AUTH_KEY')];
+				$adddata['PID'] = $_POST['PID'];
 				$adddata['Date'] = date('Y-m-d');
 				
 				// dump ($OCabilityModel->data());
@@ -109,9 +155,9 @@ class NeedController extends CommonController {
 				}
 			}
 			else {
-				dump($bn);
-				dump($temp['price']*$_POST['Count']+$balance);
-				$data['info'] = "亲！你已经欠费停机，请勿超额申请(本月可申请金额为".$bn.")。";
+				// dump($bn);
+				// dump($temp['price']*$_POST['Count']+$balance);
+				$data['info'] = "亲！你已经欠费停机，请勿超额申请(本月还可申请金额为".$bn.")。";
 				$this->ajaxReturn($data);
 			}
 		}

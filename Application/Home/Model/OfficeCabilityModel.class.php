@@ -12,7 +12,7 @@ class OfficeCabilityModel extends Model
 	protected $_auto = array(
 	); 
 
-	//获取办公类型
+	//获取办公类型用于创建申请
 	public function getTypeList()
 	{
 		$condition=array(
