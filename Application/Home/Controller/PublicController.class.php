@@ -17,6 +17,8 @@ class PublicController extends Controller {
 		
 	// 用户登录页面
     public function login() {
+		dump($_COOKIE['xdaccount']);
+		
         if(!isset($_SESSION[C('USER_AUTH_KEY')])) {
             $this->display();
         }
@@ -52,24 +54,36 @@ class PublicController extends Controller {
             if($authInfo['password'] != $_POST['password']) {
                 $this->error('密码错误！');
         }
+		
 			
             $_SESSION[C('USER_AUTH_KEY')]	=	$authInfo['id'];
             $_SESSION['email']				=	$authInfo['email'];
             $_SESSION['loginUserName']		=	$authInfo['nickname'];
             $_SESSION['lastLoginTime']		=	$authInfo['last_login_time'];
             $_SESSION['login_count']		=	$authInfo['login_count'];
-			  
+			 
+	
+			//记住登录信息
+			if(!empty($_POST['remember'])){     //如果用户选择了，记录登录状态就把用户名加了密  
+				$useridcookie=$_SESSION[C('USER_AUTH_KEY')];
+				$keycookie = md5($_POST['password']);
+				
+				setcookie("xdaccount", $useridcookie, time()+3600*24*365); 
+				setcookie("xdaccountkey", $keycookie, time()+3600*24*365);  				
+			}  
+			
+			// dump($_COOKIE['xdaccount']);
 		
 			//保存登录信息
             $User	=	M('user');
             $ip		=	get_client_ip();
             $time	=	time();
-            $data = array();
-            $data['id']	=	$authInfo['id'];
-            $data['last_login_time']	=	$time;
-            $data['login_count']	=	array('exp','login_count+1');
-            $data['last_login_ip']	=	$ip;
-            $User->save($data);
+            $userdata = array();
+            $userdata['id']	=	$authInfo['id'];
+            $userdata['last_login_time']	=	$time;
+            $userdata['login_count']	=	array('exp','login_count+1');
+            $userdata['last_login_ip']	=	$ip;
+            $User->save($userdata);
 		
 		
             // 缓存访问权限
@@ -79,6 +93,9 @@ class PublicController extends Controller {
 			$data['info'] = '登录成功！';
 			$this->ajaxReturn($data);
         
+			// $data['info'] = '登录成功！';
+			// $this->ajaxReturn($data);
+			
 		//		$this->success('登录成功！',__MODULE__.'/Index/index');
 
 		
@@ -88,8 +105,11 @@ class PublicController extends Controller {
 			$this->assign('A','带我嗨');
 			$this->assign('B',$_POST['password']);
 			$this->display();
-		*/
-
+		
+			        
+			$data['info'] = $_POST['remember'];
+			$this->ajaxReturn($data);
+		*/	
         }
     }
 	
@@ -218,6 +238,24 @@ class PublicController extends Controller {
 			}
 		}
 	}
+	
+	    // 用户登出
+    public function logout() {
+        if(isset($_SESSION[C('USER_AUTH_KEY')])) {
+            unset($_SESSION[C('USER_AUTH_KEY')]);
+            unset($_SESSION);
+            session_destroy();
+			
+			if(isset($_COOKIE['xdaccount']) || isset($_COOKIE['xdaccountkey'])){  
+				setcookie("xdaccount", null, time()-3600*24*365);
+				setcookie("xdaccountkey", null, time()-3600*24*365); 
+			}
+			redirect(PHP_FILE .C('USER_AUTH_GATEWAY'));
+			
+        }else {
+            redirect(PHP_FILE .C('USER_AUTH_GATEWAY'));
+        }
+    }
 
 }
 

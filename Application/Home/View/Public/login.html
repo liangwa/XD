@@ -20,6 +20,7 @@
         }
     });
 	
+	/*
 	$(function(){
         $('#form2').ajaxForm({
 			beforeSubmit:  process,  // pre-submit callback
@@ -38,6 +39,7 @@
 				}
         }
     });
+	*/
 </script>
 
     <div id="login_window" class="row">
@@ -45,7 +47,13 @@
         <form id="form2" class="form-horizontal" action="__CONTROLLER__/checkLogin" autocomplete="on" method="post">
                 <input id="account" class="form-control col-xs-10 col-sm-6 col-md-9" name="account" type="text" placeholder="user name" required autofocus>
 				<input id="password" class="form-control col-xs-8 col-sm-5 col-md-7" name="password" type="password" placeholder="password" required>
-                <div id="result2" class="result2" style="display:none;"></div>
+                
+				<div id="result2" class="result2" style="display:none;"></div>
+				
+				<div class="form-group"> <div class="col-sm-10"><div class="checkbox"><label>
+				<input name="remember" type="checkbox" value="1"> Remember me</label>
+				</div></div></div>
+				
 				<button id="submit" type="submit" class="form-control btn btn-primary btn-lg">Sign In</button>
 		</form>
 				<button id="forgetpw" type="button" class="form-control btn btn-info" data-toggle="modal" href='#modal-id'>Forget Password</button>

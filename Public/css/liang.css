@@ -204,3 +204,7 @@ a.liang_LinkB:hover{text-decoration:none;color: #5f3c23}
 	border-color: #ac6e41;
 	outline: 0;
 }
+
+.liang_checkbox {
+	height: 30px;
+}

@@ -27,15 +27,5 @@ class IndexController extends CommonController {
     }
 	
 	
-    // 用户登出
-    public function logout() {
-        if(isset($_SESSION[C('USER_AUTH_KEY')])) {
-            unset($_SESSION[C('USER_AUTH_KEY')]);
-            unset($_SESSION);
-            session_destroy();
-			redirect(PHP_FILE .C('USER_AUTH_GATEWAY'));
-        }else {
-            redirect(PHP_FILE .C('USER_AUTH_GATEWAY'));
-        }
-    }
+
 }
