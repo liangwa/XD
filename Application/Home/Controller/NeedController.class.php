@@ -18,9 +18,12 @@ class NeedController extends CommonController {
 			$OfficePeriodModel = D('OfficePeriod');	
 			$OfficeListModel = D('OfficeList');
 
-			$this -> assign(typelist,$OfficePeriodModel->getLatestOffice());
-			$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodID($OfficePeriodModel->getLatestPeriod()));
-
+			$periodid = $OfficePeriodModel->getLatestPeriod();
+			
+			$this -> assign(typelist,$OfficePeriodModel->getOfficeByPeriodid($periodid));
+			$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodID($periodid));
+			$this -> assign(periodname,$OfficePeriodModel->getPeriodnameByPeriodid($periodid));
+			$this -> assign(periodid,$periodid);
 				
 			$this -> display();
 	}
@@ -30,10 +33,13 @@ class NeedController extends CommonController {
 		$OCabilityModel = D('OfficeCability');	
 		$OfficePeriodModel = D('OfficePeriod');
 		$OfficeListModel = D('OfficeList');
+		$OfficeBalanceModel = M('OfficeBalance');
 		
 		if (IS_POST) {
+			$lastperiodid = $OfficePeriodModel->getLatestPeriod();
+			
 			if($_POST['data']) {
-				if($OfficeListModel->getNeedbyPeriodID($OfficePeriodModel->getLatestPeriod())){
+				if($OfficeListModel->getNeedbyPeriodid($lastperiodid)){
 
 					// dump($_POST['data']);
 					foreach ($_POST['data'] as $Cabilitykey => $eachCabilityID) {
@@ -56,16 +62,33 @@ class NeedController extends CommonController {
 					
 					if ($OfficePeriodModel -> createNewPeriod($datalist,$_POST['pname']))
 					{
+						//统计超费人员
+						$BalanceList = $OfficeBalanceModel->where('Balances > 2 AND PeriodID="'.($lastperiodid-1).'"')->select();
+					
+						// dump($BalanceList);
+						// dump($OfficeBalanceModel -> getlastsql());
+					
+						//添加欠费信息
+						foreach ($BalanceList as $eachbalance) {
+							$dataBalance['UserID'] = $eachbalance['userid'];
+							$dataBalance['Balances'] = $eachbalance['balances'] -2 ;
+							$dataBalance['PeriodID'] = $lastperiodid;
+							$dataBalance['Date'] = date('Y-m-d');
+							
+							$OfficeBalanceModel->data($dataBalance)->add();
+							// dump($dataBalance);
+						}	
 						$this->success('创建成功，快让小伙伴来申请吧');
 					}
 					else {
 						$this->error('创建失败，请联系管理员');
 					}
+					
 					// dump($OfficePeriodModel -> getLastSQL());
 				}
 				else {
-					$this->error($OfficePeriodModel->getLatestPeriod());
-					// $this->error('由于当前一期并没有人申请办公用品，出于某种脑残的理由，不让你创建新的申请...');
+					// $this->error($OfficePeriodModel->getLatestPeriod());
+					$this->error('由于当前一期并没有人申请办公用品，出于某种脑残的理由，不让你创建新的申请...');
 				}
 			}
 			else {
@@ -91,6 +114,8 @@ class NeedController extends CommonController {
 		}	
 	}
 	
+	
+	//提交申请
 	public function apply() {
 		if(IS_POST) {
 			$OfficeModel = D('OfficeNeed');			
@@ -129,7 +154,7 @@ class NeedController extends CommonController {
 			// dump($temp['price']);
 			
 			//判断欠费信息	 溢价的申请用品超过2件 或者 非足额的用户 都禁止超额申请
-			if (($bn == 2 && $_POST['Count'] == 1) || ($temp['price']*$_POST['Count'] < $bn))
+			if (($bn == 2 && $_POST['Count'] == 1) || ($temp['price']*$_POST['Count'] <= $bn))
 			{
 
 				$adddata['Count'] = $_POST['Count'];
@@ -140,6 +165,16 @@ class NeedController extends CommonController {
 				// dump ($OCabilityModel->data());
 				// dump ($adddata);
 				// dump ($OCabilityModel->getOfficebyID($_POST['CabilityID']));
+				
+				//添加欠费信息
+				if($temp['price']*$_POST['Count'] > $bn)
+				{
+					$balancedata['UserID'] = $_SESSION[C('USER_AUTH_KEY')];
+					$balancedata['Date'] = date('Y-m-d');
+					$balancedata['Balances'] = $temp['price']*$_POST['Count']-$bn;
+					$balancedata['PeriodID'] = $lastperiodid;
+					$OfficeBalanceModel->data($balancedata)->add();
+				}
 				
 				if ($OfficeModel->data($adddata)->add()) 
 					{
@@ -166,6 +201,55 @@ class NeedController extends CommonController {
 		}
 	}
 	
+	//取消申请
+	public function cancel() {
+		if($_POST['number']) {
+			$OfficeModel = D('OfficeNeed');	
+			if($_SESSION[C('USER_AUTH_KEY')] == $OfficeModel->getUserIDbyNumber($_POST['number'])){
+				$OfficeModel-> deletebyNumber($_POST['number']); 
+				
+				$data['status'] = 1;
+				$data['info'] = "取消成功";
+				$this->ajaxReturn($data);
+			}
+			else {
+				$this -> error('取消失败'); 
+			}
+		}
+		
+	}
 	
+	//导出Excel
+	public function excel() {
+		$OfficePeriodModel = D('OfficePeriod');	
+		$OfficeListModel = D('OfficeList');
+		
+
+		$periodname = $OfficePeriodModel->getPeriodnameByPeriodid($_GET['tempdate']);
+
+		// header("content-type:application/csv;charset=UTF-8");
+		header("Content-type:application/vnd.ms-excel;charset=UTF-8");
+		header("Content-Disposition:attachment;filename=".$periodname.".xls");
+		
+		//Excel转码输出
+		print(chr(0xEF).chr(0xBB).chr(0xBF));
+		
+		
+		$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodid($_GET['tempdate']));
+
+		
+		$this -> assign(typelist,$OfficeListModel->getTotalByPeriodid($_GET['tempdate']));
+		
+		// dump ($OfficeListModel->getlastsql());
+		$this -> display();
+	}
+	
+	public function histor() {
+		$OfficePeriodModel = D('OfficePeriod');	
+		$OfficeListModel = D('OfficeList');
+		
+		
+		
+	}
 	
 }

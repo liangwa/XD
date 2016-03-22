@@ -45,11 +45,9 @@ class OfficePeriodModel extends Model
 	
 
 
-	//获取当前一期的办公用品信息
-	public function getLatestOffice() {
-		$n = $this->getLatestPeriod();
-		
-		$result=$this->where('PeriodID ="'.$n.'"' )->select();
+	//获取某期的办公用品信息
+	public function getOfficeByPeriodid($periodid) {
+		$result=$this->where('PeriodID ="'.$periodid.'"' )->select();
 		
 		return $result;
 	}
@@ -57,6 +55,14 @@ class OfficePeriodModel extends Model
 		//根据PID获取办公用品信息
 	public function getOfficeByPID($pid) {
 		return $this->where('PID ="'.$pid.'"')->find();
+	}
+	
+	//获取获取某期的Name
+	public function getPeriodnameByPeriodid($periodid) {
+		
+		$result=$this->where('PeriodID ="'.$periodid.'"' )->limit(1)->getField('PName');
+		
+		return $result;
 	}
 	
 }

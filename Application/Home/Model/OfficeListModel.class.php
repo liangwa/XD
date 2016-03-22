@@ -16,10 +16,18 @@ class OfficeListModel extends Model
 	}
 	
 	//根据PID查询本期申请
-	public function getNeedbyPeriodID($periodid) {
+	public function getNeedbyPeriodid($periodid) {
 		
-		$result=$this->where('PeriodID ="'.$periodid.'"')->select();
+		$result=$this->where('PeriodID ="'.$periodid.'"')->order('UserID')->select();
 		
 		return $result;
+	}
+	
+	//根据PID查询本期申请总和
+	public function getTotalByPeriodid($periodid) {
+		$result=$this->query('SELECT sum(Count) AS allcount,CabilityName,Brand,Model,Unit,Price from xd_office_list where PeriodID="'.$periodid.'" GROUP BY PID');
+		
+		return $result;
+		
 	}
 }

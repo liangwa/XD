@@ -182,5 +182,7 @@ class UserModel extends Model
         
         return $value_time >= $start && $value_time <= $end;
     }
+	
+	//通过ID获取用户密码
     
 }

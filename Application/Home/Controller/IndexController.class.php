@@ -18,6 +18,8 @@ class IndexController extends CommonController {
 		$this->assign('A',I('session.email'));
 		*/
 		
+		// dump(get_client_ip());
+		
 		$userModel = D('User');
 		
 		$this->assign('B',$_SESSION['loginUserName']);

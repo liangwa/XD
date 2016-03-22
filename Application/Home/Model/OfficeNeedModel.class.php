@@ -21,5 +21,13 @@ class OfficeNeedModel extends Model
 	protected $_auto = array(
 	); 
 	
+	public function getUserIDbyNumber($number) {
+	return $this->where('Number ="'.$number.'"')->getField('UserID');
+	}
+	
+	public function deletebyNumber($number) {
+		$this->where('Number ="'.$number.'"')->delete();
+		
+	}
 
 }

@@ -17,13 +17,46 @@ class PublicController extends Controller {
 		
 	// 用户登录页面
     public function login() {
-		dump($_COOKIE['xdaccount']);
+		// dump($_COOKIE['xdaccount']);
+		//isset 和 empty 最大区别是判断0字节的时候
 		
-        if(!isset($_SESSION[C('USER_AUTH_KEY')])) {
-            $this->display();
+		if(isset($_SESSION[C('USER_AUTH_KEY')])) {
+			$this->redirect('/Home/index');
         }
+		else if (!empty($_COOKIE['xdaccount']))
+		{
+			$User	=	D('user');
+			$oneuser = $User -> getUserId($_COOKIE['xdaccount']);
+			if ($_COOKIE['xdaccountkey'] == md5($oneuser['password']))
+			{
+				
+				$_SESSION[C('USER_AUTH_KEY')]	=	$oneuser['id'];
+				$_SESSION['email']				=	$oneuser['email'];
+				$_SESSION['loginUserName']		=	$oneuser['nickname'];
+				$_SESSION['lastLoginTime']		=	$oneuser['last_login_time'];
+				$_SESSION['login_count']		=	$oneuser['login_count'];
+				 
+		
+				//保存登录信息
+				$ip		=	get_client_ip();
+				$time	=	time();
+				$userdata = array();
+				$userdata['id']	=	$oneuser['id'];
+				$userdata['last_login_time']	=	$time;
+				$userdata['login_count']	=	array('exp','login_count+1');
+				$userdata['last_login_ip']	=	$ip;
+				$User->save($userdata);
+				
+				$this->redirect('/Home/index');
+			}
+			else {
+				setcookie("xdaccount", null, time()-3600*24*365);
+				setcookie("xdaccountkey", null, time()-3600*24*365); 	
+				$this->display();
+			}
+		}		
 		else {
-            $this->redirect('/Home/index');
+            $this->display();
 		}
 		
     }
