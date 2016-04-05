@@ -6,13 +6,14 @@
 
 <div class="liang_list">
 <label class="liang_label">往期申请名称</label>
-<select id="periodname" class="liang_label">
-	<volist name="typelist" id="votypelist">
-		<option value="{$votypelist.periodid}" <eq name="votypelist.periodid" value="$Think.get.periodid">selected="selected"</eq>>{$votypelist.periodname}</option>
+<select id="period" class="liang_label">
+	<volist name="periodlist" id="voperiodlist">
+		<option value="{$voperiodlist.periodid}" <eq name="voperiodlist.periodid" value="$Think.get.periodid">selected="selected"</eq>>{$voperiodlist.pname}</option>
 	</volist>
 </select>
-<button onclick="Research(cabilityType.value)" class="liang_button">查询</button>
-
+<button onclick="Research(period.value)" class="liang_button">查询</button>
+<button style="float:right" class="liang_button" onclick="location='__CONTROLLER__/excel/tempdate/{$periodid}';">导出Excel</button>
+<h3>{$periodname}</h3>
 <table class="liang_table">
 	<tr>
 		<th style="width:5%">序号</th>
@@ -40,21 +41,15 @@
 			
 		</tr>
 	</volist>
-<table>	
+</table>	
 
 </div>
 <script src="__PUBLIC__/js/jquery.scrollToTop.min.js"></script>
 <script src="__PUBLIC__/js/liang_cookie.js"></script>
 <script>
-function ActionData(tempA)
+function Research(tempA)
 {
-$.post('cancel',
-{'number':tempA},
-function refresh(data){
-if(data.status){alert(data.info);}
-location.reload();
-},
-'json');
+this.location = 'history?periodid='+tempA;
 }
 </script>
 </block>

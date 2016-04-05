@@ -123,12 +123,18 @@ class BorrowController extends CommonController {
 		// $ndata['Parameter'] = $_POST['parameter'];
 		
 		
-		if ($CabilityModel->create() && $CabilityModel->save()) {
-
-			$data['status'] = 1;
-			$data['info'] = "修改成功";
-			$this->ajaxReturn($data);
-            } 
+		if ($CabilityModel->create()) {
+			if ($CabilityModel->save()) {
+				$data['status'] = 1;
+				$data['info'] = "修改成功";
+				$this->ajaxReturn($data);
+			}
+			else {
+				$data['status'] = 1;
+				$data['info'] = "数据未修改";
+				$this->ajaxReturn($data);
+			}
+        } 
         else {
 			$data['status'] = 1;
 			$data['info'] = $CabilityModel->getError();

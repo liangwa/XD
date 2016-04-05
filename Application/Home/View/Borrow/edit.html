@@ -39,13 +39,13 @@
 			
 			<td class="old"><button class="liangedit liang_button">编辑</button>
 			<button class="liangdamaged liang_button">损坏</button></td>
-			<td style="display:none" class="edit"><button class="liangsave liang_button">Save</button>
-			<button class="liangcancel liang_button">Cancel</button>
+			<td style="display:none" class="edit"><button class="liangsave liang_button">保存</button>
+			<button class="liangcancel liang_button">取消</button>
 			</td>
 		</tr>
 	</volist>
-<table>
-
+</table>
+</div>
 	 <div class="modal fade" id="new-device">
            <div class="modal-dialog">
                 <div class="modal-content" id="adddevices_liang">
@@ -85,7 +85,6 @@ $(function () { $('#new-device').on('hide.bs.modal', function () {
 //损坏
 $('.liangdamaged').confirmation({
 singleton:true,
-
 });
 </script>
 

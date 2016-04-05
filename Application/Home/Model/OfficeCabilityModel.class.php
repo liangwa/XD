@@ -6,7 +6,45 @@ use Think\Model;
 class OfficeCabilityModel extends Model
 {
 				
-	protected $_validate = array(
+	protected $_validate = array (
+	    array(
+            'CabilityName',
+            'require',
+            '产品名称必需写',
+        ) ,
+        array(
+            'CabilityName',
+            '',
+            '产品名称被占用了',
+            self::EXISTS_VALIDATE,
+            'unique',
+			self::MODEL_BOTH
+        ) ,
+        array(
+            'Brand',
+            'require',
+            '品牌必须填写'
+        ) ,
+		array(
+            'Model',
+            'require',
+            '型号必须填写'
+        ) ,
+		array(
+            'Price',
+            'require',
+            '价格必须填写'
+        ) ,
+		array(
+            'Unit',
+            'require',
+            '单位必须填写'
+        ) ,
+        array(
+            'Price',
+            '/^\d+(\.\d+)?$/',
+            '价格格式不对'
+        ) ,
     );
 	
 	protected $_auto = array(

@@ -163,6 +163,20 @@ a.liang_LinkB:hover{text-decoration:none;color: #5f3c23}
 	font-weight: bolder;
 }
 
+#addneed_liang {
+    margin: 0 auto;
+    margin-top: 35%;
+	margin-left: 10%;
+	width: 500px;
+	height: 300px
+}
+
+#addneed_liang input{
+    margin: 5px;
+	width:200px;
+	font-weight: bolder;
+}
+
 .row
 {
 	margin: 0px;

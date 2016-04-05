@@ -244,12 +244,91 @@ class NeedController extends CommonController {
 		$this -> display();
 	}
 	
-	public function histor() {
+	public function history() {
+		$this -> assign(title,"往期申请");
+		$this -> assign(description,"查询往期申请");
+		$data = array(
+		array('name' => "申请首页", link =>  __CONTROLLER__."/index"),
+		array('name' => "申请历史", link => __CONTROLLER__."/history"),
+		array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
+		array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
+		);
+		$this -> assign(othertitle,$data);
+		
 		$OfficePeriodModel = D('OfficePeriod');	
 		$OfficeListModel = D('OfficeList');
 		
+		$this -> assign(periodlist,$OfficePeriodModel->getPeriodList());
+		// dump($OfficePeriodModel->getPeriodList());
 		
 		
+		if($_GET['periodid']) {
+			$periodid = $_GET['periodid'];
+		}
+		else
+		{
+			$periodid = $OfficePeriodModel->getLatestPeriod();
+		}
+
+		$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodID($periodid));
+
+		$this -> assign(periodname,$OfficePeriodModel->getPeriodnameByPeriodid($periodid));
+		$this -> assign(periodid,$periodid);		
+		$this -> display();
+		
+	}
+	
+	public function edit() {
+		$this -> assign(title,"往期申请");
+		$this -> assign(description,"查询往期申请");
+		$data = array(
+		array('name' => "申请首页", link =>  __CONTROLLER__."/index"),
+		array('name' => "申请历史", link => __CONTROLLER__."/history"),
+		array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
+		array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
+		);
+		$this -> assign(othertitle,$data);
+		
+		$OCabilityModel = D('OfficeCability');	
+		
+		if(IS_POST) {
+			
+			
+		}
+		
+
+		
+		$this -> assign(needlist,$OCabilityModel -> getTypeList());
+		
+		$this -> display();
+
+		
+	}
+	
+	public function save() {
+		if(IS_POST){
+		$OCabilityModel = D('OfficeCability');
+			if ($OCabilityModel->create()) {
+				if ($OCabilityModel->save()) {
+					$data['status'] = 1;
+					$data['info'] = "修改成功";
+					$this->ajaxReturn($data);
+				}
+				else {
+					$data['status'] = 1;
+					$data['info'] = "数据未修改";
+					$this->ajaxReturn($data);
+				}
+			} 
+			else {
+				$data['status'] = 1;
+				$data['info'] = $OCabilityModel->getError();
+				$this->ajaxReturn($data);
+			}
+		}
+		else {
+			$this->error('输入有误');
+		}
 	}
 	
 }

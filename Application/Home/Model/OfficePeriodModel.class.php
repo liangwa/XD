@@ -65,4 +65,10 @@ class OfficePeriodModel extends Model
 		return $result;
 	}
 	
+	//获取Period list
+	public function getPeriodList() {
+		
+		return $result=$this->query("SELECT DISTINCT(periodid),PName from xd_office_period ORDER BY PeriodID DESC");
+		
+	}
 }
