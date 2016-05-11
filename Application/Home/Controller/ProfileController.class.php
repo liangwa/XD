@@ -79,4 +79,34 @@ class ProfileController extends CommonController {
 
 	}
 	
+	public function myborrow() {
+		$this -> assign(title,"我的设备");
+		$this -> assign(description,"查看、归还个人借用设备");
+		
+		$BorrowlistModel = D('Borrowlist');
+		$userborrow = $BorrowlistModel -> getBorrowlistByUser($_SESSION[C('USER_AUTH_KEY')]);
+		$approlist = $BorrowlistModel -> getAllApproList();
+		
+		$this->assign('userborrow',$userborrow);
+		$this->assign('userborrowlength', count($userborrow));
+
+		$this->assign('approlist',$approlist);
+		$this->assign('approlistlength', count($approlist));
+		
+		
+		$this -> display();
+		
+		
+		
+	}
+	
+	public function myneed() {
+		$this -> assign(title,"我的办公用品");
+		$this -> assign(description,"查看、申请本月个人办公用品");
+		
+
+
+		$this -> display();
+	}
+	
 }

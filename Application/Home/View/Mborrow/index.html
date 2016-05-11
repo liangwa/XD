@@ -8,7 +8,7 @@
 <select id="cabilityType" class="liang_label">
 <option value="all">All</option>
 	<volist name="typelist" id="votypelist">
-		<option value="{$votypelist.type}" <eq name="votypelist.type" value="$Think.get.type">selected="selected"</eq>>{$votypelist.type}</option>
+		<option value="{$votypelist.subtype}" <eq name="votypelist.subtype" value="$Think.get.type">selected="selected"</eq>>{$votypelist.subtype}</option>
 	</volist>
 </select>
 <button onclick="Research(cabilityType.value)" class="liang_button">查询</button>
@@ -28,11 +28,11 @@
 		<if condition="$voborrowlist.approved eq 0">
 			<tr>
 		<else />
-			<tr style="background-color:#FFFFCC;">
+			<tr style="background-color:#FFEFD5;">
 		</if>
 		
 			<td>{$i}</td>
-			<td>{$voborrowlist.type}</td>
+			<td>{$voborrowlist.subtype}</td>
 			<td>{$voborrowlist.id}</td>
 			<td>{$voborrowlist.parameter}</td>
 

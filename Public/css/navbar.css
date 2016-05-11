@@ -4,7 +4,7 @@ body{
 }
 
 #navbar_liang{
-  background-color: #fedcbd;
+  background-color: #fff0cd;
 }
 
 #navbar_liang a{
@@ -47,14 +47,14 @@ body{
 }
 
 #row_liang [class*="col-"] {
-	background-color: #EEE8AA;
+	background-color: #ffedc3;
 	width: 33%;
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
 
 #row_liang [class*="col-md-7"] {
-	background-color: #FFE4CA;
+	background-color: #fff3d5;
 	width: 33%;
 }
 
@@ -115,7 +115,7 @@ body{
     padding: 0.4em;
     line-height: 1.5em;
 	color: #888;
-	background: #fff0cd;	
+	background: #fff6df;	
 	display: inline-block;
 	margin: 5px;
 	float:right;

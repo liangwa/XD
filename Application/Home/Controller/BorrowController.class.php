@@ -97,7 +97,7 @@ class BorrowController extends CommonController {
 		else
 		{
 			$this -> assign(title,"损坏设备");
-			$this -> assign(description,"查看损坏常用设备");
+			$this -> assign(description,"查看所有的损坏常用设备（包括移动设备）");
 			$data = array(
 			array('name' => "设备首页", link => __CONTROLLER__."/index"),
 			array('name' => "审核设备", link => __CONTROLLER__."/appro"),

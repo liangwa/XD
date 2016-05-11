@@ -38,6 +38,14 @@ class CabilityModel extends Model
             'callback',
             self::MODEL_BOTH
         ) ,
+		array(
+            'SubType',
+            'checkSubType',
+            '设备类型超出可能范围',
+            self::VALUE_VALIDATE,
+            'callback',
+            self::MODEL_BOTH
+        ) ,
     );
 	
 	protected $_auto = array(
@@ -61,6 +69,19 @@ class CabilityModel extends Model
 			return false;
 		}
     }
+	
+	//检查子类型
+	function checkSubType($value) 
+	{
+		$result=$this->where('SubType ="'.$value.'" and Damaged != 1')->find();
+		if($result)
+		{ 
+			return true;
+		}
+		else {
+			return false;
+		}
+    }
 	 
 	//获取常用设备类型
 	public function getTypeList()
@@ -73,13 +94,25 @@ class CabilityModel extends Model
 		return $result;
 	}
 	
-	//获取损坏设备列表
-	public function getDamagedList()
+	//获取移动设备类型
+	public function getMTypeList()
 	{
-		$result=$this->where('Type <> "Phone / Pad" and Damaged = 1')->select();
+		$condition=array(
+				'Damaged' => 0,
+			);
+		$result=$this->distinct(true)->field('SubType')->where($condition)->where('type = "Phone / Pad"')->order('SubType')->select();
 		
 		return $result;
 	}
+	
+	//获取所有损坏设备列表
+	public function getDamagedList()
+	{
+		$result=$this->where('Damaged = 1')->select();
+		
+		return $result;
+	}
+	
 	
 	//获取常用设备列表
 	public function getDevicesList()
@@ -89,10 +122,26 @@ class CabilityModel extends Model
 		return $result;
 	}
 	
+	//获取移动设备列表
+	public function getMDevicesList()
+	{
+		$result=$this->where('Type = "Phone / Pad" and Damaged != 1')->select();
+		
+		return $result;
+	}
+	
 	//根据类型获取常用设备列表
 	public function getDevicesListByType($type)
 	{
 		$result=$this->where('type ="'.$type.'" and Damaged != 1')->select();
+		
+		return $result;
+	}
+	
+	//根据类型获取移动设备列表
+	public function getMDevicesListByType($type)
+	{
+		$result=$this->where('SubType ="'.$type.'" and Damaged != 1')->select();
 		
 		return $result;
 	}

@@ -50,6 +50,7 @@ $(".liangcancel").click(function(){
 	$(this).parent("td").parent("tr").find(".edit").hide();
 	$(this).parent("td").parent("tr").find(".old").show();
 	
+	$(this).parent("td").parent("tr").find(".nsubtype").children("input").val($(this).parent("td").parent("tr").find(".subtype").text());
 
 // $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").prev("td").hide();
 // $(this).parent("td").prev("td").prev("td").prev("td").prev("td").prev("td").show();
@@ -69,6 +70,8 @@ var ntype = $(this).parent("td").parent("tr").find(".ntype").children("input").v
 var nid = $(this).parent("td").parent("tr").find(".nid").children("input").val();
 var npar= $(this).parent("td").parent("tr").find(".npar").children("input").val();
 
+var nsubtype = $(this).parent("td").parent("tr").find(".nsubtype").children("input").val();
+
 if (ndid && ntype && nid && npar)   
 {
 	$.post('save',
@@ -79,6 +82,16 @@ if (ndid && ntype && nid && npar)
 	},
 	'json');
 
+}
+else if (ndid && nsubtype && nid && npar)
+{
+	$.post('save',
+	{'DID':ndid,'SubType':nsubtype,'ID':nid,'Parameter':npar},
+	function refresh(data){
+	if(data.status){alert(data.info);}
+	location.reload();
+	},
+	'json');
 }
 else	{
 	alert("修改属性不能为空");

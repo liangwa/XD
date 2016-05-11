@@ -23,9 +23,10 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#">管理资产</a></li>
-                <li><a href="#">管理设备</a></li>
+                <li><a href="__MODULE__/Borrow/edit">管理常用设备</a></li>
+				<li><a href="__MODULE__/Mborrow/edit">管理移动设备</a></li>
                 <li><a href="#">管理IP</a></li>
-				<li><a href="#">管理办公用品</a></li>
+				<li><a href="__MODULE__/Need/edit">管理办公用品</a></li>
                 <li role="separator" class="divider"></li>
 
                 <li><a href='__MODULE__\Mgmt\createuser'>添加用户</a></li>
@@ -37,9 +38,9 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{$_SESSION['loginUserName']}<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#">我的资产</a></li>
-                <li><a href="#">我的IP</a></li>
-                <li><a href="#">我的设备</a></li>
-				<li><a href="#">我本月办公用品</a></li>
+                <li><a href="__MODULE__\Profile\myborrow">我的设备</a></li>
+				<li><a href="#">我的IP</a></li>
+				<li><a href="__MODULE__\Profile\myneed">我本月办公用品</a></li>
                 <li role="separator" class="divider"></li>
 
                 <li><a href="__MODULE__\Profile\myinfo">我的个人信息</a></li>
