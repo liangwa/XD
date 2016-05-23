@@ -33,21 +33,21 @@ class UserModel extends Model
 		array(
             'account',
             '/^[A-Za-z0-9\\-]+$/',
-            '登录名必须由英文字符和数字组成'
+            '登录名只能由英文字符和数字组成'
         ) ,
         array(
             'password',
             'require',
             '密码必须填写'
         ) ,
-        array(
-			'password',
-            'confirm_password',
-            '确认密码不一致',
-            self::MUST_VALIDATE,
-            'confirm',
-            self::MODEL_INSERT
-        ) ,
+        // array(
+			// 'password',
+            // 'confirm_password',
+            // '确认密码不一致',
+            // self::MUST_VALIDATE,
+            // 'confirm',
+            // self::MODEL_INSERT
+        // ) ,
         array(
             'email',
             'require',
