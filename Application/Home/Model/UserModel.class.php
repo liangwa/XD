@@ -23,6 +23,11 @@ class UserModel extends Model
 			self::MODEL_BOTH
         ) ,
 		array(
+            'nickname',
+            '/^[\x{4e00}-\x{9fa5}]+$/u',
+            '用户名只能由中文字符组成'
+        ) ,
+		array(
             'account',
             '',
             '登录名被别人占用了',
@@ -91,8 +96,8 @@ class UserModel extends Model
         ) ,
 		array(
             'skype',
-            '/^live:[a-zA-Z0-9_]+$/',
-            'skype帐号是以live:开头'
+            'require',
+            'Skype必须填写'
         ) ,
 		array(
             'employeeid',

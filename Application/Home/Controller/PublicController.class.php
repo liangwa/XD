@@ -275,20 +275,20 @@ class PublicController extends Controller {
 		else
 		{
 			//判断页面是否有效
-			if ($ftuModel->getftuKey($_GET['email'],$_GET['key'])) {
-				$_SESSION['ftuemail'] = $_GET['email'];
-				$_SESSION['ftuusername'] = $ftuModel->getftuUser($_GET['key']);
-				
-				
-			//  dump($ftuModel->getlastsql());
-			//	dump($_SESSION['ftuid']);
-				$this -> display();
+			if (!($ftuModel->getftuKey($_GET['email'],$_GET['key']))) {
 			//	dump('页面有效');
+			//	$this -> display();
+			//  dump('页面无效');
+				$this->error('邀请链接无效！',PHP_FILE.C('USER_AUTH_GATEWAY'),2);
 			}
 			else {
-			//	$this -> display();
-			//	dump('页面无效');
-				$this->error('邀请链接无效！',PHP_FILE.C('USER_AUTH_GATEWAY'),2);
+				$_SESSION['ftuemail'] = $_GET['email'];
+				$_SESSION['ftuusername'] = $ftuModel->getftuUser($_GET['key']);
+				// dump('11111');
+				// dump($ftuModel->getlastsql());
+				// dump($_SESSION['ftuemail']);
+
+				$this -> display();
 			}
 		}
 	}
@@ -334,7 +334,7 @@ class PublicController extends Controller {
 		}
 	}
 	
-	public function error() {
+	public function accesserror() {
 		$this -> display();
 	}
 	

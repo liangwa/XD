@@ -33,7 +33,8 @@ class IndexController extends CommonController {
 		
 		// system("powershell -file Action\ad.ps1 0 ccc @WSX3edc");
 		
-		
+		$this->error('邀请链接无效！',PHP_FILE.C('USER_AUTH_GATEWAY'),2);
+		/*
 		$ldapusername='XD1\\administrator';
 		$ldapuserpassword ='@WSX3edc4';
 		$ds=ldap_connect("xd1ad.xd1.com","389");  // must be a valid LDAP server!
@@ -85,9 +86,8 @@ class IndexController extends CommonController {
 		
 		 // dump(phpinfo());
 		
-		
+		*/
         $this->display();
-		
 
     }
 	
