@@ -86,6 +86,8 @@ class IndexController extends CommonController {
 		
 		 // dump(phpinfo());
 		
+		
+        $this->display();
 		*/
     }
 	
