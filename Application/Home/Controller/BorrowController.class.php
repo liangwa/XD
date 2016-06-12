@@ -3,17 +3,26 @@ namespace Home\Controller;
 use Think\Controller;
 
 class BorrowController extends CommonController {
-    // 框架首页
-    public function index() {
-		$this -> assign(title,"常用设备");
-		$this -> assign(description,"查看、借用常用设备");
+	
+	
+	protected function titleassgin() {
+		$this -> assign(titleA,"设备首页");
+		$this -> assign(titleAlink,__CONTROLLER__."/index");
+		
+				
 		$data = array(
-		array('name' => "设备首页", link => __CONTROLLER__."/index"),
 		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
 		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
 		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
 		);
 		$this -> assign(othertitle,$data);
+	}
+	
+    // 框架首页
+    public function index() {
+		$this -> assign(title,"常用设备");
+		$this -> assign(description,"查看、借用常用设备");
+		$this -> titleassgin();
 
 		
 		$CabilityModel = D('Cability');
@@ -39,13 +48,7 @@ class BorrowController extends CommonController {
 			
 		$this -> assign(title,"审核设备");
 		$this -> assign(description,"允许、拒绝借出常用设备");
-		$data = array(
-		array('name' => "设备首页", link => __CONTROLLER__."/index"),
-		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
-		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
-		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
-		);
-		$this -> assign(othertitle,$data);
+		$this -> titleassgin();
 		
 		$BorrowlistModel = D('Borrowlist');
 		$this -> assign(approlist,$BorrowlistModel->getApproList());
@@ -58,13 +61,7 @@ class BorrowController extends CommonController {
 			
 		$this -> assign(title,"编辑设备");
 		$this -> assign(description,"添加，编辑常用设备");
-		$data = array(
-		array('name' => "设备首页", link => __CONTROLLER__."/index"),
-		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
-		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
-		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
-		);
-		$this -> assign(othertitle,$data);
+		$this -> titleassgin();
 		
 		$CabilityModel = D('Cability');
 		
@@ -98,14 +95,8 @@ class BorrowController extends CommonController {
 		{
 			$this -> assign(title,"损坏设备");
 			$this -> assign(description,"查看所有的损坏常用设备（包括移动设备）");
-			$data = array(
-			array('name' => "设备首页", link => __CONTROLLER__."/index"),
-			array('name' => "审核设备", link => __CONTROLLER__."/appro"),
-			array('name' => "管理设备", link => __CONTROLLER__."/edit"),
-			array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
-			);
-			$this -> assign(othertitle,$data);
-			
+			$this -> titleassgin();
+				
 			$this -> assign(damagedlist,$CabilityModel->getDamagedList());
 		
 			$this->display();
@@ -168,7 +159,7 @@ class BorrowController extends CommonController {
 		$BorrowOne = $BorrowModel -> getBorrowid($_POST['id']);
 		
 		
-		$borrowuserrole = D('RoleUser') -> where("role_id=1 and user_id=%d",$_SESSION[C('USER_AUTH_KEY')])-> find(); 
+		$borrowuserrole = D('RoleUser') -> where("role_id=2 and user_id=%d",$_SESSION[C('USER_AUTH_KEY')])-> find(); 
 		
 		//dump($borrowuserrole);
 		//switch($_GET['Action'])
@@ -199,6 +190,7 @@ class BorrowController extends CommonController {
 				$this->ajaxReturn($data);
 			}
 			break;
+			
 		case 'Retn':
 			if($BorrowOne['approved'] == 2 && $BorrowOne['userid'] == $_SESSION[C('USER_AUTH_KEY')])
 			{		
@@ -233,6 +225,7 @@ class BorrowController extends CommonController {
 				$this->ajaxReturn($data);
 			}
 			break;
+			
 		case 'ReApproved':
 			if($BorrowOne['approved'] == 3 && $borrowuserrole)
 			{
@@ -253,6 +246,7 @@ class BorrowController extends CommonController {
 				$this->ajaxReturn($data);
 			}
 			break;
+			
 		case 'CBrow':
 			if($BorrowOne['approved'] == 1 && ($BorrowOne['userid'] == $_SESSION[C('USER_AUTH_KEY')] || $borrowuserrole))
 			{

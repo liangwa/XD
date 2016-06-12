@@ -3,17 +3,16 @@ namespace Home\Controller;
 use Think\Controller;
 
 class MborrowController extends BorrowController {
+	
+	protected function titleassgin() {
+		parent::titleassgin();
+	}
+	
     // 框架首页
     public function index() {
 		$this -> assign(title,"移动设备");
 		$this -> assign(description,"查看、借用移动设备");
-		$data = array(
-		array('name' => "设备首页", link => __CONTROLLER__."/index"),
-		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
-		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
-		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
-		);
-		$this -> assign(othertitle,$data);
+		$this -> titleassgin();
 
 		
 		$CabilityModel = D('Cability');
@@ -42,13 +41,7 @@ class MborrowController extends BorrowController {
 			
 		$this -> assign(title,"审核设备");
 		$this -> assign(description,"允许、拒绝借出移动设备");
-		$data = array(
-		array('name' => "设备首页", link => __CONTROLLER__."/index"),
-		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
-		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
-		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
-		);
-		$this -> assign(othertitle,$data);
+		$this -> titleassgin();
 		
 		$BorrowlistModel = D('Borrowlist');
 		$this -> assign(approlist,$BorrowlistModel->getMApproList());
@@ -61,13 +54,7 @@ class MborrowController extends BorrowController {
 			
 		$this -> assign(title,"编辑设备");
 		$this -> assign(description,"添加，编辑移动设备");
-		$data = array(
-		array('name' => "设备首页", link => __CONTROLLER__."/index"),
-		array('name' => "审核设备", link => __CONTROLLER__."/appro"),
-		array('name' => "管理设备", link => __CONTROLLER__."/edit"),
-		array('name' => "损坏设备", link =>  __CONTROLLER__."/damaged"),
-		);
-		$this -> assign(othertitle,$data);
+		$this -> titleassgin();
 		
 		$CabilityModel = D('Cability');
 		

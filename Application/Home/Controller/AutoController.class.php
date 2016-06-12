@@ -3,10 +3,13 @@ namespace Home\Controller;
 use Think\Controller;
 
 class AutoController extends CommonController {
-    // 框架首页
-    public function index() {
-		$this -> assign(title,"VDA自动化");
-		$this -> assign(description,"XD VDA自动生成配置");
+	
+	
+	private function titleassgin() {
+		$this -> assign(titleA,"自动化首页");
+		$this -> assign(titleAlink,__CONTROLLER__."/index");
+		
+				
 		$data = array(
 		array('name' => "VDA", link => __CONTROLLER__."/index"),
 		array('name' => "DDC", link => __CONTROLLER__."/"),
@@ -14,6 +17,13 @@ class AutoController extends CommonController {
 		array('name' => "XD", link =>  __CONTROLLER__."/"),
 		);
 		$this -> assign(othertitle,$data);
+	}
+	
+    // 框架首页
+    public function index() {
+		$this -> assign(title,"VDA自动化");
+		$this -> assign(description,"XD VDA自动生成配置");
+		$this -> titleassgin();
 		
 		// $cmd = 'C:/1.bat';
 		// system("C:\\1.bat",$out);

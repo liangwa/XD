@@ -1,37 +1,105 @@
 <extend name="Base/common"/>
 <block name="content">
 <include file="./Base/model"/>
-<div class="liang_list">
-	<label class="liang_label">提醒事项：当你创建后</label>
-	</br>
-	<div class="liang_label" style="color:red">1.大家会被添加额度</div>
-	</br>
-	<div class="liang_label" style="color:red">2.无法再次申请上一期办公用品</div>
-	</br>
-	<div class="liang_label" style="color:red">3.无法删除这一期的申请</div>
-	</br>
-		
-<form id="form" class="form-horizontal" action="__CONTROLLER__/create" autocomplete="on" method="post">
-	<label class="liang_label">办公用品申请新的一期名称</label>
-	<input class="liang_input_big" placeholder="New Period's Name" name="pname" required autofocus>
-	</br>
-	<label class="liang_label">本期可申请用品选择</label>
 
-	<!--可选用品代码区 -->
-	</br>
-	<volist name="typelist" id="votypelist">
-	<label class="checkbox-inline">
-	  <input type="checkbox" name="data[]" value="{$votypelist.cabilityid}">{$votypelist.cabilityname} ({$votypelist.brand}{$votypelist.model} && {$votypelist.price}元/{$votypelist.unit})
-	</label>
-	</br>
-	</volist>
+<div class="modal fade" id="addPeriod">
+  <div class="modal-dialog">
+    <div class="modal-content">
 	
-	</br>
-	</br>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">创建申请</h4>
+      </div>
+	  
+<div class="modal-body">
+		<label class="liang_label">提醒事项：当你创建后</label>
+		</br>
+		<div class="liang_label" style="color:red">1.大家会被添加额度</div>
+		</br>
+		<div class="liang_label" style="color:red">2.无法再次申请上一期办公用品</div>
+		</br>
+		<div class="liang_label" style="color:red">3.无法删除这一期的申请</div>
+		</br>
+			
+	<form id="form" class="form-horizontal" action="__CONTROLLER__/create" autocomplete="on" method="post">
+		<label class="liang_label">办公用品申请新的一期名称</label>
+		<input class="liang_input_big" placeholder="New Period's Name" name="pname" required autofocus>
+		</br>
+		<label class="liang_label">本期可申请用品选择</label>
 
-	<button type="submit" class="liang_button">创建</button>
-	</form>
-</div>
-<script src="__PUBLIC__/js/liang_form.js"></script>	
+		<!--可选用品代码区 -->
+		</br>
+		<volist name="typelist" id="votypelist">
+		<label class="checkbox-inline">
+		  <input type="checkbox" name="data[]" value="{$votypelist.cabilityid}">{$votypelist.cabilityname} ({$votypelist.brand}{$votypelist.model} && {$votypelist.price}元/{$votypelist.unit})
+		</label>
+		</br>
+		</volist>
+		
+		</br>
+		</br>
+		</div>
+			<div class="modal-footer">
+				<button type="button" class="liang_button" data-dismiss="modal">取消</button>
+				<button type="submit" class="liang_button">创建</button>
+			</div>
+		</form>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+	<div style="margin-left:2%;">
+	<button data-toggle="modal" data-target="#addPeriod" class="liang_button">创建申请</button>
+
+	</br>
+		</br>
+			</br>
+	
+	<div class="row">
+		  <div class="col-md-2"><label class="liang_label">本期申请状态</label></div>
+		  <div class="col-md-2"><div class="switch" data-on="warning" data-off="danger">
+				<input type="checkbox" checked>
+		</div></div>
+	</div>
+
+	</br>
+	<div class="row"><div class="col-md-2">
+	<label class="liang_label" style="margin-top:1%;">本期申请总结</label>
+	</div>
+	</div>
+	
+	<table class="liang_table" style="width:60%;">
+	<tr>
+		<th>No.</th>
+		<th>品名</th>
+		<th>品牌</th>
+		<th>型号</th>
+		<th>单位</th>
+		<th>申请数量</th>
+		<th>总价格</th>
+	</tr>
+	
+	<volist name="totallist" id="vototallist">
+		<tr>
+			<td>{$i}</td>
+			<td>{$vototallist.cabilityname}</td>
+			<td>{$vototallist.brand}</td>
+			<td>{$vototallist.model}</td>
+
+			<td>{$vototallist.unit}</td>
+			<td>{$vototallist.allcount}</td>
+			<td>{$vototallist['price']*$vototallist['allcount']}</td>
+		
+		</tr>
+	</volist>
+	</table>
+	
+
+	</div>
+
+<script src="__PUBLIC__/js/bootstrapSwitch.js"></script>
+<script src="__PUBLIC__/js/liang_form.js"></script>		
 </block>
 

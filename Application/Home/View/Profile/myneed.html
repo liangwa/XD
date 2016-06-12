@@ -6,6 +6,7 @@
 <label class="mylabel"><h4><ul><li>我本次申请的办公用品, <a href="__MODULE__/Need/index">查看更多的办公用品申请？</a></li></ul></h4></label>
 </br>
 </br>
+<if condition="$periodstatus eq 1">
 <form id="form" class="form-horizontal" style="width:80%;float:left" action="__MODULE__/Need/apply" autocomplete="on" method="post">
 <label class="liang_label">办公用品名称</label>
 <select name="PID" class="liang_label liang_input">
@@ -16,7 +17,7 @@
 <input class="liang_label liang_input" name="Count" placeholder="申请数量" required autofocus>
 <button type="submit" class="liang_button">提交</button>
 </form>
-
+</if>
 <table class="liang_table">
 	<tr>
 		<th style="width:12%">品名</th>

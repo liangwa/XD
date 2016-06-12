@@ -71,4 +71,10 @@ class OfficePeriodModel extends Model
 		return $result=$this->query("SELECT DISTINCT(periodid),PName from xd_office_period ORDER BY PeriodID DESC");
 		
 	}
+	
+	//获取某期的状态
+	public function getPeriodStatusByPeriodid($periodid) {
+		return $this->where('PeriodID ="'.$periodid.'"' )->limit(1)->getField('Status');		
+	}
+	
 }

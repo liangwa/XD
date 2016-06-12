@@ -315,9 +315,11 @@ class PublicController extends Controller {
 	public function checkldap($username,$password) {
 		$ds=ldap_connect("172.16.80.248","389");  // must be a valid LDAP server!
 		
+		$ldapusername='XD1\\'.$username;
+		
 		if ($ds) 
 		{
-			if (ldap_bind($ds, $username , $password))
+			if (ldap_bind($ds, $ldapusername , $password))
 			{
 				return true;
 			}
@@ -334,9 +336,6 @@ class PublicController extends Controller {
 		}
 	}
 	
-	public function accesserror() {
-		$this -> display();
-	}
 	
 }
 

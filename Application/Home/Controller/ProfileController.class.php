@@ -115,7 +115,8 @@ class ProfileController extends CommonController {
 
 		$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodIDandUser($_SESSION[C('USER_AUTH_KEY')],$periodid));
 
-
+		$this -> assign(periodstatus,$OfficePeriodModel->getPeriodStatusByPeriodid($periodid));
+		
 		$this -> display();
 	}
 	

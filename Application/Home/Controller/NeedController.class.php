@@ -3,29 +3,45 @@ namespace Home\Controller;
 use Think\Controller;
 
 class NeedController extends CommonController {
+
+	private function titleassgin() {
+		$this -> assign(titleA,"申请首页");
+		$this -> assign(titleAlink,__CONTROLLER__."/index");
+				
+		$data = array(
+		array('name' => "申请历史", link => __CONTROLLER__."/history"),
+		array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
+		array('name' => "管理申请", link =>  __CONTROLLER__."/create"),
+		);
+		$this -> assign(othertitle,$data);
+	}
+
+
     // 框架首页
     public function index() {
 			$this -> assign(title,"办公用品");
 			$this -> assign(description,"查看、申请办公用品");
-			$data = array(
-			array('name' => "申请首页", link =>  __CONTROLLER__."/index"),
-			array('name' => "申请历史", link => __CONTROLLER__."/history"),
-			array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
-			array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
-			);
-			$this -> assign(othertitle,$data);
+			$this -> titleassgin();
 
 			$OfficePeriodModel = D('OfficePeriod');
-			$OfficeListModel = D('OfficeList');
-
 			$periodid = $OfficePeriodModel->getLatestPeriod();
-
-			$this -> assign(typelist,$OfficePeriodModel->getOfficeByPeriodid($periodid));
-			$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodID($periodid));
-			$this -> assign(periodname,$OfficePeriodModel->getPeriodnameByPeriodid($periodid));
-			$this -> assign(periodid,$periodid);
-
-			$this -> display();
+			
+			
+			if($OfficePeriodModel->getPeriodStatusByPeriodid($periodid))
+			{
+				$OfficeListModel = D('OfficeList');
+				$this -> assign(typelist,$OfficePeriodModel->getOfficeByPeriodid($periodid));
+				$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodID($periodid));
+				$this -> assign(periodname,$OfficePeriodModel->getPeriodnameByPeriodid($periodid));
+				$this -> assign(periodid,$periodid);
+				
+				$this -> display();
+			}
+			else
+			{
+				// dump($OfficePeriodModel->getlastsql());
+				redirect(__MODULE__."/Need/block.html");
+			}
 	}
 
 	//创建申请
@@ -35,8 +51,9 @@ class NeedController extends CommonController {
 		$OfficeListModel = D('OfficeList');
 		$OfficeBalanceModel = M('OfficeBalance');
 
+		$lastperiodid = $OfficePeriodModel->getLatestPeriod();
+		
 		if (IS_POST) {
-			$lastperiodid = $OfficePeriodModel->getLatestPeriod();
 
 			if($_POST['data']) {
 				if($OfficeListModel->getNeedbyPeriodid($lastperiodid)){
@@ -99,16 +116,11 @@ class NeedController extends CommonController {
 		else {
 			$this -> assign(title,"创建申请");
 			$this -> assign(description,"创建新的申请");
-			$data = array(
-			array('name' => "申请首页", link =>  __CONTROLLER__."/index"),
-			array('name' => "申请历史", link => __CONTROLLER__."/history"),
-			array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
-			array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
-			);
-			$this -> assign(othertitle,$data);
+			$this -> titleassgin();
 
 
 			$this -> assign(typelist,$OCabilityModel->getTypeList());
+			$this -> assign(totallist,$OfficeListModel->getTotalByPeriodid($lastperiodid));
 
 			$this -> display();
 		}
@@ -247,13 +259,7 @@ class NeedController extends CommonController {
 	public function history() {
 		$this -> assign(title,"往期申请");
 		$this -> assign(description,"查询往期申请");
-		$data = array(
-		array('name' => "申请首页", link =>  __CONTROLLER__."/index"),
-		array('name' => "申请历史", link => __CONTROLLER__."/history"),
-		array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
-		array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
-		);
-		$this -> assign(othertitle,$data);
+		$this -> titleassgin();
 
 		$OfficePeriodModel = D('OfficePeriod');
 		$OfficeListModel = D('OfficeList');
@@ -281,13 +287,7 @@ class NeedController extends CommonController {
 	public function edit() {
 		$this -> assign(title,"管理用品");
 		$this -> assign(description,"编辑修改用品");
-		$data = array(
-		array('name' => "申请首页", link =>  __CONTROLLER__."/index"),
-		array('name' => "申请历史", link => __CONTROLLER__."/history"),
-		array('name' => "管理用品", link =>  __CONTROLLER__."/edit"),
-		array('name' => "创建申请", link =>  __CONTROLLER__."/create"),
-		);
-		$this -> assign(othertitle,$data);
+		$this -> titleassgin();
 
 		$OCabilityModel = D('OfficeCability');
 

@@ -8,6 +8,10 @@
 			<tr>
 				<td>
 				<h4>
+				<if condition="isset($titleA)">
+				<div class="liang_smalltitleA"><a href="{$titleAlink}">{$titleA}</a></div>
+				>>
+				</if>
 				<div class="liang_smalltitle">&nbsp;{$title}&nbsp;</div>
 				{$description}
 				<if condition="isset($othertitle)">

@@ -33,10 +33,10 @@ class IndexController extends CommonController {
 		
 		// system("powershell -file Action\ad.ps1 0 ccc @WSX3edc");
 		
-		$this->error('邀请链接无效！',PHP_FILE.C('USER_AUTH_GATEWAY'),2);
+		// $this->error('邀请链接无效！',PHP_FILE.C('USER_AUTH_GATEWAY'),2);
 		/*
-		$ldapusername='XD1\\administrator';
-		$ldapuserpassword ='@WSX3edc4';
+		$ldapusername='XD1\\zhangchu';
+		$ldapuserpassword ='@WSX3edc';
 		$ds=ldap_connect("xd1ad.xd1.com","389");  // must be a valid LDAP server!
 		
 		if ($ds) 
@@ -50,7 +50,7 @@ class IndexController extends CommonController {
 				
 				// $ldaptree = "OU=Users,DC=xd1,DC=com";
 				// add data to directory
-				if(ldap_count_entries($ds, ldap_search($ds, "CN=Users,DC=xd1,DC=com", "samAccountName=wangliang")))
+				if(ldap_count_entries($ds, ldap_search($ds, "CN=Users,DC=xd1,DC=com", "samAccountName=zhangchu")))
 				{
 					dump('有个用户');
 				}
@@ -87,9 +87,17 @@ class IndexController extends CommonController {
 		 // dump(phpinfo());
 		
 		*/
+    }
+	
+	public function newuser() {
+		
+		$this -> assign(title,"新人须知");
+		$this -> assign(description,"欢迎新用户，了解项目组和常用信息");
+		
         $this->display();
 
     }
+	
 	
 	
 	/*
