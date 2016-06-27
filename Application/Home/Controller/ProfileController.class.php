@@ -61,7 +61,9 @@ class ProfileController extends CommonController {
 			
 			$reset_url = "http://$host/PHP/index.php/Home/Public/ResetPage/id/".$_SESSION[C('USER_AUTH_KEY')]."/key/$key";
 			
-			if(SendMail($_POST['myemail'],'XD重置密码',"请点击链接重置你的密码:<a href='$reset_url'>$reset_url</a>"))
+			// $this->error(SendMail("wangliang_368@163.com","XD重置密码","请点击链接重置你的密码"));
+			
+			if(SendMail($_POST['myemail'],'XD重置密码',"请点击链接重置你的密码:<a href='".$reset_url."'>".$reset_url."</a>"))
 			{
                 $this->success('重置邮件已发送！');
 			}
@@ -116,6 +118,18 @@ class ProfileController extends CommonController {
 		$this -> assign(needlist,$OfficeListModel->getNeedbyPeriodIDandUser($_SESSION[C('USER_AUTH_KEY')],$periodid));
 
 		$this -> assign(periodstatus,$OfficePeriodModel->getPeriodStatusByPeriodid($periodid));
+		
+		$this -> display();
+	}
+	
+	public function myauto() {
+		$this -> assign(title,"我的自动化信息");
+		$this -> assign(description,"查看、编辑个人自动化信息");
+		
+
+		$this -> assign(xs,M('AutoServer')->where('userid ="'.$_SESSION[C('USER_AUTH_KEY')].'"')->select());
+		$this -> assign(dc,M('AutoDc')->where('userid ="'.$_SESSION[C('USER_AUTH_KEY')].'"')->select());
+		$this -> assign(ddc,M('AutoDdc')->where('userid ="'.$_SESSION[C('USER_AUTH_KEY')].'"')->select());
 		
 		$this -> display();
 	}

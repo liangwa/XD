@@ -22,7 +22,7 @@ class MgmtController extends CommonController {
 			// $this->success('新用户创建邮件已发送！XD1用户已经创建！');
 			
 			
-			if ($userModel->getEmailAddress($_POST['email']) || $ftuuser->getEmailAddress($_POST['email']) || $this->ldapuser($_POST['username']) ) {
+			if ($userModel->getEmailAddress($_POST['email']) || $ftuuser->getEmailAddress($_POST['email']) ) {
 				$this->error('帐号已存在或者邀请链接已发出！');
 			}
 			else {
@@ -37,13 +37,19 @@ class MgmtController extends CommonController {
 				if(SendMail($_POST['email'],'XD新建用户',"你的XD1帐号已经生成，请点击激活创建您的帐号:<a href='$ftu_url'>$ftu_url</a>"))
 				{
 					
-					//创建AD用户
-					system("powershell -file D:\workspaces\PHP\Action\ad.ps1 0 ".$_POST['username']." @WSX3edc");
-					
 					//保存数据
 					$ftuuser-> add($data);
 					
-					$this->success('新用户创建邮件已发送！XD1用户已经创建！');
+					//创建AD用户
+					if (!$this->ldapuser($_POST['username']))
+					{
+						system("powershell -file D:\workspaces\PHP\Action\ad.ps1 0 ".$_POST['username']." @WSX3edc");
+					
+						$this->success('新用户创建邮件已发送！XD1用户已经创建！');
+					}
+					else {
+						$this->success('新用户创建邮件已发送！XD1用户已经存在！');
+					}
 					
 					
 				}

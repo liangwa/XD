@@ -17,8 +17,8 @@
                 <div id="fturs">{$errors.email}</div>
                 </if>
 				</br>
-				<label id="ftulabel"><h4>请确认您的登录信息</h4></label>
-                <input id="ftuaccount" class="form-control col-xs-10 col-sm-6 col-md-9" name="account" placeholder="登录名" value="{$_SESSION['ftuusername']}" required autofocus readonly>
+				<label id="ftulabel"><h4>请确认您的默认登录信息</h4></label>
+                <input id="ftuaccount" class="form-control col-xs-10 col-sm-6 col-md-9" name="account" value="{$_SESSION['ftuusername']}" required autofocus readonly>
 			
 				<input id="ftupw1" class="form-control col-xs-10 col-sm-6 col-md-9" name="password" value="@WSX3edc" required autofocus readonly>
 				<if condition="isset($errors['account'])">

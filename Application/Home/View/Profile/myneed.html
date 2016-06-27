@@ -17,6 +17,7 @@
 <input class="liang_label liang_input" name="Count" placeholder="申请数量" required autofocus>
 <button type="submit" class="liang_button">提交</button>
 </form>
+<else /> <label class="liang_label">本次申请已结束</label>
 </if>
 <table class="liang_table">
 	<tr>
@@ -38,7 +39,10 @@
 			<td>{$voneedlist.price}</td>
 			<td>{$voneedlist.unit}</td>
 			<td>{$voneedlist.count}</td>
+			<if condition="$periodstatus eq 1">
 			<td><button class="liang_button" onclick="ActionData('{$voneedlist.number}')">取消</button></td>
+			<else /> <td></td>
+			</if>
 		</tr>
 	</volist>
 </table>	

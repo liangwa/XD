@@ -1,5 +1,585 @@
 <extend name="Base/common"/>
 <block name="content">
 <include file="./Base/model"/>
+
+	<div class="panel-group liang_group" id="accordion" role="tablist" aria-multiselectable="true">
+		
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingOne">
+				<h4 class="panel-title"><a role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Step #1 -  Specify or Add the server or machine</a>
+				</h4>
+			</div>
+			
+			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+				<div class="panel-body form-horizontal">
+				
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Select your server：</label>
+							<div class="col-sm-5">
+								<select class="form-control" id="xsconf">
+									<foreach name="xs" item="vo">
+									<option value={$vo.ip}>{$vo.ip}</option>
+									</foreach>
+								</select>
+							</div>
+							<div class="col-sm-2">
+								<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#serverModal">Add Existing One</button>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingTwo">
+				<h4 class="panel-title"><a role="button" data-toggle="collapse"  href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">Step #2 -  Specify the parameters of new DC or Use your own</a>
+				</h4>
+			</div>
+			
+			<div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+				<div class="panel-body form-horizontal">
+				
+					<div class="form-group">
+							<label class="col-sm-4 control-label">Select your DC: </label>
+							<div class="col-sm-5">
+								<select class="form-control" onChange="getAD(this)" id="dcconf">
+									<foreach name="dc" item="vo">
+									<option value={$vo.name}>{$vo.name}</option>
+									</foreach>
+									<option value="auto">**Auto Create One**</option>
+								</select>
+							</div>
+							<div class="col-sm-2">
+								<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#dcModal">Add Existing One</button>
+							</div>
+					</div>
+					
+					<div id='ad_info' style='display: none'>
+				
+						
+						<div class="form-group">
+							<label for="dcos" class="col-sm-4 control-label">Select DC OS: </label>
+							<div class="col-sm-5">
+								<select class="form-control" id="dcos">
+								  <option value="Windows 2008">Windows 2008</option>
+								  <option value="Windows 2012">Windoes 2012</option>
+								  <option value="Windows 2016">Windoes 2016</option>
+								</select>
+							</div>							
+						</div>
+						
+						
+						<div class="form-group">
+							<label for="machinename" class="col-sm-4 control-label">DC machine name: </label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="dcmname" placeholder="[a random name]">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="adfqdn" class="col-sm-4 control-label">DC full name: </label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="dcname" placeholder="mydomain.com">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="adip" class="col-sm-4 control-label">DC IP address: </label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="dcip" placeholder="172.16.xx.xxx">
+							</div>
+						</div>						
+
+					</div>  <!--ad_info-->	
+					
+				</div>
+			</div>
+		</div>
+	
+	
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingThree">
+				<h4 class="panel-title"><a role="button" data-toggle="collapse"  href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">Step #3 -  Specify the parameters of DDC</a>
+				</h4>
+			</div>
+			
+			<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+				<div class="panel-body form-horizontal">
+				
+									<div class="form-group">
+							<label class="col-sm-4 control-label">Select your DDC: </label>
+							<div class="col-sm-5">
+								<select class="form-control" onChange="getDDC(this)" id="ddcconf">
+									<foreach name="ddc" item="vo">
+									<option value={$vo.name}>{$vo.name}</option>
+									</foreach>
+									<option value="auto">**Auto Create One**</option>
+								</select>
+							</div>
+							
+							<div class="col-sm-2">
+								<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#ddcModal">Add Existing One</button>
+							</div>
+					</div>
+					
+			<div id='ddc_info' style='display: none'>
+				
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Select DDC OS: </label>
+							<div class="col-sm-5">
+								<select class="form-control" id="ddcos">
+									<option value="Win2008">Win2008</option>
+									<option value="Win2012">Win2012</option>
+									<option value="Win2016">Win2016</option>
+								</select>
+							</div>							
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Select DDC Build: </label>
+							<div class="col-sm-5">
+								<select class="form-control" id="ddcbuild">
+									<foreach name="full" item="vo">
+										<option value="{$vo}">{$vo}</option>
+									</foreach>
+								</select>
+							</div>							
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Select DDC Number: </label>
+							<div class="col-sm-5">
+								<select class="form-control" id="ddcnum">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+								</select>
+							</div>							
+						</div>
+					</div>  <!--ddc_info-->	
+					
+					
+				</div>
+			</div>
+		</div>
+	
+	
+	
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingFour">
+				<h4 class="panel-title"><a role="button" data-toggle="collapse"  href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">Step #4 -  Specify the parameters of VDC</a>
+				</h4>
+			</div>
+			
+			<div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
+				<div class="panel-body form-horizontal">
+									
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Select VDA Type: </label>
+							<div class="col-sm-5">
+								<select class="form-control" id='vdatype' onChange="getBuild(this)">
+									<option value="full">Full ISO</option>
+									<option value="mini">Mini</option>
+								</select>
+							</div>							
+						</div>						
+						
+				<div id='vda_info'>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Select VDA OS: </label>
+							<div class="col-sm-5">
+								<select class="form-control" id="vdaos">
+									<option value="Win7x86">Win7x86</option>
+									<option value="Win7x64">Win7x64</option>
+									<option value="Win10x86">Win10x86</option>
+									<option value="Win10x64">Win10x64</option>
+									<option value="Win2008">Win2008</option>
+									<option value="Win2012">Win2012</option>
+									<option value="Win2016">Win2016</option>
+								</select>
+							</div>							
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Select VDA Build: </label>
+							<div class="col-sm-5">
+								<select class="form-control" id="vdabuild">
+									<foreach name="full" item="vo">
+										<option value="{$vo}">{$vo}</option>
+									</foreach>
+								</select>
+							</div>							
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Select VDA Number: </label>
+							<div class="col-sm-5">
+								<select class="form-control" id="vdanum">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+								</select>
+							</div>							
+						</div>
+					</div>  <!--vda_info-->					
+						</br>
+						<div class="form-group">
+							<div class="col-sm-offset-8 col-sm-4">
+							<button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Confirm</button>
+							</div>
+						</div>
+								
+				</div>
+			</div>
+		</div>	
+	
+
+		
+	</div>
+	
+	<!-- 模态框（Modal）添加Server -->
+	<div class="modal fade" id="serverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog liang_modal">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<button type="button" class="close" 
+				   data-dismiss="modal" aria-hidden="true">
+					  &times;
+				</button>
+				<h4 class="modal-title">
+				   Please add your existing server (Should configure it at FTU)
+				</h4>
+			 </div>
+				<form class="form-horizontal" action="__CONTROLLER__/addserver" autocomplete="on" method="post" id="addserver">
+			 <div class="modal-body">
+
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Server Type: </label>
+						<div class="col-sm-5">
+							<select class="form-control" name="type">
+								<option value="XenServer">XenServer</option>
+								<option value="Hyper-V">Hyper-V</option>
+								<option value="Vmware ESX">Vmware ESX</option>
+								<option value="Physical/Localhost">Physical/Localhost</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Server IP: </label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="my server IP" name="ip" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Server Admin Account</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="Root\Administrator" name="account" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Password</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="password" name="password" required>
+						</div>
+					</div>
+
+
+			 </div>
+			 <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-warning">Add One</button>
+			 </div>
+				</form>
+			</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->	
+
+
+	<!-- 模态框（Modal）添加DC -->
+	<div class="modal fade" id="dcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog liang_modal">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<button type="button" class="close" 
+				   data-dismiss="modal" aria-hidden="true">
+					  &times;
+				</button>
+				<h4 class="modal-title">
+				   Please add your existing DC (Should configure it at FTU)
+				</h4>
+			 </div>
+				<form class="form-horizontal" action="__CONTROLLER__/adddc" autocomplete="on" method="post" id="adddc">
+			 <div class="modal-body">
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Domain Name:</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="domain.local" name="name" required>
+						</div>
+					</div>
+					
+
+
+			 </div>
+			 <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-warning">Add One</button>
+			 </div>
+				</form>
+			</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->	
+
+
+	<!-- 模态框（Modal）添加DDC -->
+	<div class="modal fade" id="ddcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog liang_modal">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<button type="button" class="close" 
+				   data-dismiss="modal" aria-hidden="true">
+					  &times;
+				</button>
+				<h4 class="modal-title">
+				   Please add your existing DDC (Should configure it at FTU)
+				</h4>
+			 </div>
+				<form class="form-horizontal" action="__CONTROLLER__/addddc" autocomplete="on" method="post" id="addddc">
+			 <div class="modal-body">
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">DDC Name:</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="ddc.domain.local" name="name" required>
+						</div>
+					</div>
+
+			 </div>
+			 <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-warning">Add One</button>
+			 </div>
+				</form>
+			</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->	
+
+<!-- 模态框（Modal）确认 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog liang_modal">
+      <div class="modal-content">
+	  
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title">
+               Please Confirm
+            </h4>
+         </div>
+			<form class="form-horizontal" action="__CONTROLLER__/run" autocomplete="on" method="post">
+         <div class="modal-body" id="c_form">
+
+			<h5>Your configurations are:  </h5>
+			
+				<div class="form-group">
+					<label class="col-sm-4 control-label">1. Host Server: </label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control bg-info" id="c_xs" name="cxs" value="" required readonly>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-4 control-label">2. Domain: </label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control" id="c_dc" name="cdc" value="" required readonly>
+					</div>
+					
+					<div class="form-group-sm" id="c_dc_info">
+					
+						<label class="col-sm-4 control-label">OS</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_dc_os" name="cdcos" value="Null" required readonly>
+						</div>
+						
+						<label class="col-sm-4 control-label">Machine Name</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_dc_mname" name="cdcmname" value="Null" required readonly>
+						</div>
+
+						<label class="col-sm-4 control-label">Domain Name</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_dc_name" name="cdcname" value="Null" required readonly>
+						</div>
+
+						<label class="col-sm-4 control-label">Machine IP</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_dc_ip" name="cdcip" value="Null" required readonly>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-4 control-label">3. XD DDC: </label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control" id="c_ddc" name="cddc" value="" required readonly>
+					</div>
+					
+					<div class="form-group-sm" id="c_ddc_info">
+					
+						<label class="col-sm-4 control-label">OS</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_ddc_os" name="cddcos" value="Null" required readonly>
+						</div>
+						
+						<label class="col-sm-4 control-label">Build</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_ddc_build" name="cddcbuild" value="Null" required readonly>
+						</div>
+
+						<label class="col-sm-4 control-label">Number</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_ddc_num" name="cddcnum" value="Null" required readonly>
+						</div>
+
+					</div>
+				
+				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-4 control-label">4. XD VDA: </label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control" id="c_vda" name="cvda" value="" required readonly>
+					</div>
+														
+					<div class="form-group-sm" id="c_vda_info">
+					
+						<label class="col-sm-4 control-label">OS</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_vda_os" name="cvdaos" value="Null" required readonly>
+						</div>
+						
+						<label class="col-sm-4 control-label">Build</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_vda_build" name="cvdabuild" value="Null" required readonly>
+						</div>
+
+						<label class="col-sm-4 control-label">Number</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="c_vda_num" name="cvdanum" value="Null" required readonly>
+						</div>
+
+					</div>
+
+				</div>
+
+         </div>
+         <div class="modal-footer">
+		 	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-warning">Submit & Run</button>
+         </div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->	
+
+</div>
+<script>
+$(function() {
+	if(!{$xs}){
+	$('#serverModal').modal('show')
+	}
+	else if(!{$dc}) {
+	$('#dcModal').modal('show')
+	}
+	else if(!{$ddc}) {
+	$('#ddcModal').modal('show')
+	}
+	
+
+        $('#addserver').ajaxForm({
+            success:       complete,  // post-submit callback
+            dataType: 'json'
+        });
+		
+		$('#adddc').ajaxForm({
+            success:       complete,  // post-submit callback
+            dataType: 'json'
+        });
+		
+		$('#addddc').ajaxForm({
+            success:       complete,  // post-submit callback
+            dataType: 'json'
+        });
+		
+        function complete(data){
+			alert(data.info);
+			location.reload();
+        }
+		
+});
+
+function getAD(obj) {
+var adtype = obj.value; 
+
+	if (adtype == "auto" ) {
+		$("#ad_info").show();
+		$("#ddcconf option").remove();
+		
+		$("#ddcconf").append("<option value='auto'>**Auto Create One**</option>");
+		$("#ddcconf").append("<option value='none'>****Not Need****</option>");
+
+		ddc_auto();
+	}
+	else {
+		$("#ad_info").hide();
+		$("#ddcconf option").remove();
+		
+		<foreach name="dc" item="vo">
+		$("#ddcconf").append("<option value='{$vo.name}'>{$vo.name}</option>");
+		</foreach>
+		$("#ddcconf").append("<option value='auto'>**Auto Create One**</option>");
+		
+		ddc_other();
+	}
+	
+}
+
+function getBuild(obj) {
+var buildtype=obj.value; 
+var build=document.getElementById('vdabuild'); 
+
+build.options.length=0;
+	if (buildtype == "mini" ) {
+		$("#vda_info").show();
+		<foreach name="mini" item="vo" key="k" >
+			build.options[{$k}] = new Option("{$vo}","{$vo}");
+		</foreach>
+	}
+	else if (buildtype == "full" ) {
+		$("#vda_info").show();
+		<foreach name="full" item="vo" key="k" >
+			build.options[{$k}] = new Option("{$vo}","{$vo}");
+		</foreach>
+	}
+	else if ( buildtype == "none" ) {
+		$("#vda_info").hide();
+	}
+}
+
+</script>
+<script src="__PUBLIC__/js/liang_auto.js"></script>
 </block>
 

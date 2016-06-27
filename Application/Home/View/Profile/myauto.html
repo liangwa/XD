@@ -1,0 +1,260 @@
+<extend name="Base/common"/>
+<block name="content">
+<include file="./Base/model"/>
+<div style="width:60%;margin-left:10%">
+
+<label class="mylabel"><h4><ul><li>我的自动化信息 <a href="__MODULE__/Auto/index">去执行</a></li></ul></h4></label>
+</br>
+</br>
+
+<label class="liang_label">My Server</label> 
+<table class="liang_table">
+	<tr>
+		<th>ID.</th>
+		<th>Type</th>
+		<th>IP</th>
+		<th>Account</th>
+							
+		<th>Password</th>
+		<th>Action</th>
+	</tr>
+	
+	<volist name="xs" id="xs">
+		<tr>
+			<td>{$i}</td>
+			<td>{$xs.type}</td>
+			<td>{$xs.ip}</td>
+			<td>{$xs.account}</td>
+			<td>{$xs.password}</td>
+			<if condition="$xs.default eq 1">
+			<td><button class="btn btn-default btn-sm" onclick="ActionData('{$xs.id}','xs','del')">Delete</button></td>
+			<else /> <td><button class="btn btn-default btn-sm" onclick="ActionData('{$xs.id}','xs','del')">Delete</button> <button class="btn btn-default btn-sm" onclick="ActionData('{$xs.id}','xs','def')">Default</button></td>
+			</if>
+		</tr>
+	</volist>
+</table>	
+</br>
+<button class="liang_button" data-toggle="modal" data-target="#serverModal">Add</button> 
+
+</br>
+<hr />
+</br>
+
+<label class="liang_label">My DC</label> 
+<table class="liang_table" style="width:60%">
+	<tr>
+		<th>ID.</th>
+		<th>Name</th>
+
+		<th>Action</th>
+	</tr>
+	
+	<volist name="dc" id="dc">
+		<tr>
+			<td>{$i}</td>
+			<td>{$dc.name}</td>
+			<if condition="$dc.default eq 1">
+			<td><button class="btn btn-default btn-sm" onclick="ActionData('{$dc.id}','dc','del')">Delete</butkton></td>
+			<else /> <td><button class="btn btn-default btn-sm" onclick="ActionData('{$dc.id}','dc','del')">Delete</button> <button class="btn btn-default btn-sm" onclick="ActionData('{$dc.id}','dc','def')">Default</button></td>
+			</if>
+		</tr>
+	</volist>
+</table>	
+</br>
+<button class="liang_button" data-toggle="modal" data-target="#dcModal">Add</button> 
+
+</br>
+<hr />
+</br>
+
+<label class="liang_label">My DDC</label> 
+<table class="liang_table" style="width:60%">
+	<tr>
+		<th>ID.</th>
+		<th>Name</th>
+
+		<th>Action</th>
+	</tr>
+	
+	<volist name="ddc" id="ddc">
+		<tr>
+			<td>{$i}</td>
+			<td>{$ddc.name}</td>
+			<if condition="$ddc.default eq 1">
+			<td><button class="btn btn-default btn-sm" onclick="ActionData('{$ddc.id}','ddc','del')">Delete</button></td>
+			<else /> <td><button class="btn btn-default btn-sm" onclick="ActionData('{$ddc.id}','ddc','del')">Delete</button> <button class="btn btn-default btn-sm" onclick="ActionData('{$ddc.id}','ddc','def')">Default</button></td>
+			</if>
+		</tr>
+	</volist>
+</table>	
+</br>
+<button class="liang_button" data-toggle="modal" data-target="#ddcModal">Add</button> 
+
+</div>
+	<!-- 模态框（Modal）添加Server -->
+	<div class="modal fade" id="serverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog liang_modal">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<button type="button" class="close" 
+				   data-dismiss="modal" aria-hidden="true">
+					  &times;
+				</button>
+				<h4 class="modal-title">
+				   Please add your existing server
+				</h4>
+			 </div>
+				<form class="form-horizontal" action="__MODULE__/Auto/addserver" autocomplete="on" method="post" id="addserver">
+			 <div class="modal-body">
+
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Server Type: </label>
+						<div class="col-sm-5">
+							<select class="form-control" name="type">
+								<option value="XenServer">XenServer</option>
+								<option value="Hyper-V">Hyper-V</option>
+								<option value="Vmware ESX">Vmware ESX</option>
+								<option value="Physical/Localhost">Physical/Localhost</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Server IP: </label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="my server IP" name="ip" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Server Admin Account</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="Root\Administrator" name="account" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Password</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="password" name="password" required>
+						</div>
+					</div>
+
+
+			 </div>
+			 <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-warning">Add One</button>
+			 </div>
+				</form>
+			</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->	
+
+
+	<!-- 模态框（Modal）添加DC -->
+	<div class="modal fade" id="dcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog liang_modal">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<button type="button" class="close" 
+				   data-dismiss="modal" aria-hidden="true">
+					  &times;
+				</button>
+				<h4 class="modal-title">
+				   Please add your existing DC
+				</h4>
+			 </div>
+				<form class="form-horizontal" action="__MODULE__/Auto/adddc" autocomplete="on" method="post" id="adddc">
+			 <div class="modal-body">
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Domain Name:</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="domain.local" name="name" required>
+						</div>
+					</div>
+					
+
+
+			 </div>
+			 <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-warning">Add One</button>
+			 </div>
+				</form>
+			</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->	
+
+
+	<!-- 模态框（Modal）添加DDC -->
+	<div class="modal fade" id="ddcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog liang_modal">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<button type="button" class="close" 
+				   data-dismiss="modal" aria-hidden="true">
+					  &times;
+				</button>
+				<h4 class="modal-title">
+				   Please add your existing DDC
+				</h4>
+			 </div>
+				<form class="form-horizontal" action="__MODULE__/Auto/addddc" autocomplete="on" method="post" id="addddc">
+			 <div class="modal-body">
+					
+					<div class="form-group">
+						<label class="col-sm-4 control-label">DDC Name:</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" placeholder="ddc.domain.local" name="name" required>
+						</div>
+					</div>
+
+			 </div>
+			 <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-warning">Add One</button>
+			 </div>
+				</form>
+			</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->	
+<script>
+$(function() {
+        $('#addserver').ajaxForm({
+            success:       complete,  // post-submit callback
+            dataType: 'json'
+        });
+		
+		$('#adddc').ajaxForm({
+            success:       complete,  // post-submit callback
+            dataType: 'json'
+        });
+		
+		$('#addddc').ajaxForm({
+            success:       complete,  // post-submit callback
+            dataType: 'json'
+        });
+		
+        function complete(data){
+			alert(data.info);
+			location.reload();
+        }
+		
+});
+
+function ActionData(tempA,tempB,tempC)
+{
+$.post('__MODULE__/Auto/action',
+{'id':tempA,'type':tempB,'action':tempC},
+function refresh(data){
+if(data.status){alert(data.info);}
+location.reload();
+},
+'json');
+}
+
+</script>
+</block>
+

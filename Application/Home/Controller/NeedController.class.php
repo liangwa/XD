@@ -117,10 +117,11 @@ class NeedController extends CommonController {
 			$this -> assign(title,"创建申请");
 			$this -> assign(description,"创建新的申请");
 			$this -> titleassgin();
-
-
+			
+			
 			$this -> assign(typelist,$OCabilityModel->getTypeList());
 			$this -> assign(totallist,$OfficeListModel->getTotalByPeriodid($lastperiodid));
+			$this -> assign(periodstatus,$OfficePeriodModel->getPeriodStatusByPeriodid($lastperiodid));
 
 			$this -> display();
 		}
@@ -344,6 +345,23 @@ class NeedController extends CommonController {
 				$data['info'] = $OCabilityModel->getError();
 				$this->ajaxReturn($data);
 			}
+		}
+		else {
+			$this->error('输入有误');
+		}
+	}
+	
+	public function enable() {
+		if(IS_POST){
+			$OfficePeriodModel = D('OfficePeriod');
+			$lastperiodid = $OfficePeriodModel->getLatestPeriod();
+			
+			$OfficePeriodModel->updatePeriodStatus($lastperiodid);
+			
+			$data['status'] = 1;
+			// $data['info'] = $OfficePeriodModel-> getLastsql();
+			$data['info'] = "修改成功";
+			$this->ajaxReturn($data);
 		}
 		else {
 			$this->error('输入有误');

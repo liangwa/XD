@@ -77,4 +77,19 @@ class OfficePeriodModel extends Model
 		return $this->where('PeriodID ="'.$periodid.'"' )->limit(1)->getField('Status');		
 	}
 	
+	//更改某期的状态
+	public function updatePeriodStatus($lastperiodid) {
+		if ($this->getPeriodStatusByPeriodid($lastperiodid))
+		{
+			$data['Status'] = 0;
+		}
+		else
+		{
+			$data['Status'] = 1;
+		}
+		
+		$this->where('PeriodID='.$lastperiodid)->save($data); 
+	}
+	
+	
 }

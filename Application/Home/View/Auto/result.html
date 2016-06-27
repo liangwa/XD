@@ -1,0 +1,60 @@
+<extend name="Base/common"/>
+<block name="content">
+<include file="./Base/model"/>
+	<div style="width:50%;margin:10%">
+
+	<table class="table">
+	   <caption>相关配置</caption>
+	   <thead>
+		  <tr>
+			<th>Domain</th>
+			<th>DDC</th>
+			<th>Number</th>
+			<th>OS</th>
+		  </tr>
+	   </thead>
+	   <tbody>
+		  <tr>
+		  </tr>
+	   </tbody>
+	</table>
+	<label>相关信息读取失败</label>
+	<h4><span id="done" style="background-color:#00ff00"></span></h4>
+</div>
+
+	<div class="modal fade" id="modal-id">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">启动配置</h4>
+                </div>
+                <div class="modal-body" id="myinfo_update_body">
+					<div class="progress progress-striped">
+						<div class="progress-bar progress-bar-warning six-sec-ease-in-out" role="progressbar" data-transitiongoal='100'></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<script src="__PUBLIC__/js/bootstrap-progressbar.js"></script>
+<script>
+$(function() {
+		$('#modal-id').modal('show');
+		$('.progress .progress-bar').progressbar({
+			display_text:'fill',
+			done: function() { $('#modal-id').modal('hide');
+			$('#done').html('Yeah! Done!');}
+			});
+});
+</script>
+
+<style>
+.six-sec-ease-in-out {
+transition: width 6s ease-in-out;
+}
+</style>
+
+</block>
+

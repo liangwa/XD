@@ -51,17 +51,19 @@
 
 
 	<div style="margin-left:2%;">
-	<button data-toggle="modal" data-target="#addPeriod" class="liang_button">创建申请</button>
 
+	<button data-toggle="modal" data-target="#addPeriod" class="liang_button">创建申请</button>
 	</br>
 		</br>
 			</br>
 	
 	<div class="row">
 		  <div class="col-md-2"><label class="liang_label">本期申请状态</label></div>
-		  <div class="col-md-2"><div class="switch" data-on="warning" data-off="danger">
-				<input type="checkbox" checked>
-		</div></div>
+		  <div class="col-md-2">
+			<div class="switch" data-on="warning" data-off="danger" onchange="status()">
+				<input type="checkbox" name="checkstatus" id="checkstatus" <if condition="$periodstatus eq 1">checked</if>>
+			</div>
+		</div>
 	</div>
 
 	</br>
@@ -95,11 +97,21 @@
 		</tr>
 	</volist>
 	</table>
-	
-
 	</div>
 
 <script src="__PUBLIC__/js/bootstrapSwitch.js"></script>
 <script src="__PUBLIC__/js/liang_form.js"></script>		
+<script>
+function status() {
+	alert('小二正在处理中....');
+	$.post('enable',
+	{},
+	function refresh(data){
+	if(data.status){alert(data.info);}
+	location.reload();
+	},
+	'json');
+}
+</script>	
 </block>
 
