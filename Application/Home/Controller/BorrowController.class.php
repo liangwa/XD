@@ -285,4 +285,54 @@ class BorrowController extends CommonController {
 			break;
 		}	
 	}
+	
+	public function history() {
+		$BorrowModel = D('Borrow');
+		$user = D('User');
+		
+		// $history = $BorrowModel->getBorrowdid($_POST['did']);
+		
+		$history = $BorrowModel->getBorrowdid($_POST['did']);
+		if(isset($history)){
+				
+			foreach($history as $key => $value) {
+				$data[$key]['borrowuser'] = $user -> getUserNamebyID($value['userid']);
+				$data[$key]['borrowdate'] = $value['borrowdate'];
+				$data[$key]['borrowapprouser'] = $user -> getUserNamebyID($value['borrowapprouser']);
+				$data[$key]['returndate'] = $value['returndate'];
+				$data[$key]['returnapprouser'] = $user -> getUserNamebyID($value['returnapprouser']);
+				
+				if ($data[$key]['borrowuser'] == null) {
+					$data[$key]['borrowuser'] = '未借出';
+					$data[$key]['borrowdate'] = '';
+					$data[$key]['borrowapprouser'] = '';
+					$data[$key]['returndate'] = '';
+					$data[$key]['returnapprouser'] = '';
+				}
+				else if ($data[$key]['borrowapprouser'] == null) {
+					$data[$key]['borrowapprouser'] = '未审核';
+					$data[$key]['returndate'] = '';
+					$data[$key]['returnapprouser'] = '';
+				}
+				else if ($data[$key]['returndate'] == null) {
+					$data[$key]['returndate'] = '未归还';
+					$data[$key]['returnapprouser'] = '';
+				}
+				else if ($data[$key]['returnapprouser'] == null) {
+					$data[$key]['returnapprouser'] = '未审核';
+				}
+			}
+			
+			// dump($data[0]['returnapprouser']); 
+
+			// $data[0]['status'] = 1;
+			// $data[0]['info'] = "出错啦1";
+			
+			// $data[1]['status'] = 2;
+			// $data[1]['info'] = "出错啦2";
+			
+			$this->ajaxReturn($data);
+		}
+
+	}
 }

@@ -30,7 +30,7 @@ return array(
     'USER_AUTH_ON'              =>  true,
     'USER_AUTH_TYPE'			=>  2,		// 默认认证类型 1 登录认证 2 实时认证
     'USER_AUTH_KEY'             =>  'authId',	// 用户认证SESSION标记
-    'ADMIN_AUTH_KEY'			=>  'administrator',
+    'ADMIN_AUTH_KEY'			=>  'wangliang',
     'USER_AUTH_MODEL'           =>  'User',	// 默认验证数据表模型
     'AUTH_PWD_ENCODER'          =>  'md5',	// 用户认证密码加密方式
     'USER_AUTH_GATEWAY'         =>  '/Home/Public/login',// 默认认证网关
@@ -57,7 +57,7 @@ return array(
     'MAIL_USERNAME' 			=>	'xd0o0xd@163.com',//你的邮箱名
     'MAIL_FROM' 				=>	'xd0o0xd@163.com',//发件人地址
     'MAIL_FROMNAME'				=>	'XD Team',//发件人姓名
-    'MAIL_PASSWORD' 			=>	'wangliang123',//邮箱密码
+    'MAIL_PASSWORD' 			=>	'',//邮箱密码
     'MAIL_CHARSET' 				=>	'utf-8',//设置邮件编码
     'MAIL_ISHTML' 				=>	TRUE, // 是否HTML格式邮件	
 	

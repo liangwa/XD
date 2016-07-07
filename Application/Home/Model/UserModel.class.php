@@ -141,6 +141,17 @@ class UserModel extends Model
 		return $result;
 	}
 	
+	//通过ID获取用户名
+	public function getUserNamebyID($UserId)
+	{
+		$condition=array(
+				'id' => $UserId,
+			);
+		$result=$this->where($condition)->getField('nickname');
+		
+		return $result;
+	}
+	
 	//保存随机码
     public function updateUserKey($userid,$key) {
     	$this->id=$userid;

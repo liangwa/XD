@@ -1,3 +1,7 @@
+$(function () { $('#new-device').on('hide.bs.modal', function () {
+	location.reload();
+	})
+   });
 
 //设备借还
 function ActionData(tempB,tempC)
@@ -22,6 +26,11 @@ function Reeditsearch(tempA)
 {
 this.location = 'edit?type='+tempA;
 }
+
+//损坏
+$('.liangdamaged').confirmation({
+singleton:true,
+});
 
 
 //编辑
@@ -98,6 +107,45 @@ else	{
 	}
 });
 
+
+//查询
+$(".liangsearch").click(function(){
+var ndid = $(this).parent("td").parent("tr").find(".ndid").text();
+
+$.post('history',{'did':ndid},
+	function history(data){
+		// document.getElementById("historytable").innerHTML=data[0].borrowuser;
+		
+		var table = document.getElementById("historytable");
+		
+		var tbody = document.createElement("tbody");
+		table.appendChild(tbody);
+		
+		for(i=0; i < data.length; i++){
+			tbody.insertRow(i);
+			tbody.rows[i].insertCell(0);
+			tbody.rows[i].cells[0].appendChild(document.createTextNode(data[i].borrowuser));
+			tbody.rows[i].insertCell(1);
+			tbody.rows[i].cells[1].appendChild(document.createTextNode(data[i].borrowdate));
+			tbody.rows[i].insertCell(2);
+			tbody.rows[i].cells[2].appendChild(document.createTextNode(data[i].borrowapprouser));
+			tbody.rows[i].insertCell(3);
+			tbody.rows[i].cells[3].appendChild(document.createTextNode(data[i].returndate));
+			tbody.rows[i].insertCell(4);
+			tbody.rows[i].cells[4].appendChild(document.createTextNode(data[i].returnapprouser));
+		}
+		$('#HistoryModal').modal('show');
+	},
+	'json');
+
+});
+
+//清除查询记录
+$(function () { $('#HistoryModal').on('hide.bs.modal', function () {
+	$("#historytable").children("tbody").remove();
+	})
+ });
+   
 // $(".liangdamaged").click(function(){
 // var did = $(this).parent("td").parent("tr").find(".ndid").text();
 // $(this).confirmation('show');

@@ -16,6 +16,16 @@ class BorrowModel extends Model
 		return $result;
 	}
 	
+	//通过did获得borrow条目历史信息 
+	public function getBorrowdid($did)
+	{
+		$condition=array(
+				'DID' => $did,
+			);
+		$result=$this->where($condition)->select();
+		
+		return $result;
+	}
 	
 	//借设备
 	public function borrowid($id)

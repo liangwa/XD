@@ -114,8 +114,8 @@ class NeedController extends CommonController {
 
 		}
 		else {
-			$this -> assign(title,"创建申请");
-			$this -> assign(description,"创建新的申请");
+			$this -> assign(title,"管理申请");
+			$this -> assign(description,"管理，创建新的申请");
 			$this -> titleassgin();
 			
 			

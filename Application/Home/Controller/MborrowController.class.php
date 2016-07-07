@@ -92,4 +92,8 @@ class MborrowController extends BorrowController {
 	public function action(){
 		parent::action();
 	}
+	
+	public function history(){
+		parent::history();
+	}
 }

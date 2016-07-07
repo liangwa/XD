@@ -22,8 +22,12 @@ class MgmtController extends CommonController {
 			// $this->success('新用户创建邮件已发送！XD1用户已经创建！');
 			
 			
-			if ($userModel->getEmailAddress($_POST['email']) || $ftuuser->getEmailAddress($_POST['email']) ) {
-				$this->error('帐号已存在或者邀请链接已发出！');
+			
+			if ($userModel->getEmailAddress($_POST['email'])) {
+				$this->error('帐号已存在！');
+			}
+			else if ($exftu = $ftuuser->getEmailAddress($_POST['email'])) {
+				$this->error("邀请链接已发出！也可以手动复制链接发给他 http://$host/PHP/index.php/Home/Public/ftu/email/".$exftu['email']."/key/".$exftu['ftukey']);
 			}
 			else {
 				$host = $_SERVER['HTTP_HOST'];
@@ -31,30 +35,27 @@ class MgmtController extends CommonController {
 				$data['email'] = $_POST['email'];
 				$data['username'] = $_POST['username'];
 				
+				//创建AD用户
+				if (!$this->ldapuser($_POST['username']))
+				{
+					system("powershell -file C:\wamp\www\PHP\Action\ad.ps1 0 ".$_POST['username']." @WSX3edc");
+					$msg = "XD1用户已经创建！";
+				}
+				else {
+					$msg = "XD1用户已经存在！";
+				}
+
+				//保存数据
+				$ftuuser-> add($data);
 				
 				$ftu_url = "http://$host/PHP/index.php/Home/Public/ftu/email/".$data['email']."/key/".$data['ftukey'] ;
 				
-				if(SendMail($_POST['email'],'XD新建用户',"你的XD1帐号已经生成，请点击激活创建您的帐号:<a href='$ftu_url'>$ftu_url</a>"))
+				if(SendMail($data['email'],'XD新建用户',"你的XD1帐号已经生成，请点击激活创建您的帐号:<a href='$ftu_url'>$ftu_url</a>"))
 				{
-					
-					//保存数据
-					$ftuuser-> add($data);
-					
-					//创建AD用户
-					if (!$this->ldapuser($_POST['username']))
-					{
-						system("powershell -file D:\workspaces\PHP\Action\ad.ps1 0 ".$_POST['username']." @WSX3edc");
-					
-						$this->success('新用户创建邮件已发送！XD1用户已经创建！');
-					}
-					else {
-						$this->success('新用户创建邮件已发送！XD1用户已经存在！');
-					}
-					
-					
+					$this->success('新用户创建邮件已发送！'.$msg.'也可以手动复制链接发给他'.$ftu_url);
 				}
 				else {
-					$this->error('发送失败');
+					$this->error('邮件发送失败'.$msg.'也可以手动复制链接发给他'.$ftu_url);
 				}
 					
 			}
